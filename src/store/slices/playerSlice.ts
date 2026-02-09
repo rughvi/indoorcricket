@@ -21,9 +21,9 @@ export const playerSlice = createSlice({
             state.allPlayers = action.payload;
         },
         assignPlayersToTeams: (state, action) => {
-            if(action.payload.team === "team1") {
+            if(action.payload.team === "1") {
                 state.team1Players = Object.assign([], action.payload.players);
-            } else if (action.payload.team === "team2") {
+            } else if (action.payload.team === "2") {
                 state.team2Players = Object.assign([], action.payload.players);
             }
         },

@@ -14,7 +14,7 @@ function App() {
         <Route path="/" Component={Main}></Route>
         <Route path="/gameSelection" Component={GameSelection}></Route>
         <Route path="/teamsSelection" Component={TeamsSelection}></Route>
-        <Route path="/teamSelection" Component={TeamSelection}></Route>    
+        <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>    
       </Routes>
     </BrowserRouter>
   );

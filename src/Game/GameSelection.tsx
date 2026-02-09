@@ -5,12 +5,15 @@ import './GameCard.css';
 import '../CSS/Button.css';
 import { getPlayers } from "../Services/PlayerService";
 import { Player } from "../Models/Player";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { assignAllPlayers } from "../store/slices/playerSlice";
+import { IRootState } from "../store/store";
 
 const GameSelection = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
+    const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
 
     useEffect(() => {
         const getPlayersData = async () => {
@@ -28,16 +31,22 @@ const GameSelection = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div >Team 1</div>
-                    <button className="Button" onClick={() => {navigate('/teamSelection')}}>Edit</button>
+                    <button className="Button" onClick={() => {navigate('/teamSelection/1')}}>Edit</button>
                 </div>
+                <p>
+                    {team1Players.map(p => p.name).join(", ")}
+                </p>
             </div>
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div >Team 2</div>
-                    <button className="Button">Edit</button>
+                    <button className="Button" onClick={() => {navigate('/teamSelection/2')}}>Edit</button>
                 </div>
+                <p>
+                    {team2Players.map(p => p.name).join(", ")}
+                </p>
             </div>
-            <button className="ActionButton" onClick={() => {navigate('/teamsSelection')}}> Select teams </button>
+            <button className="ActionButton" onClick={() => {navigate('/teamsSelection/2')}}> Select teams </button>
             
         </div>
     )
