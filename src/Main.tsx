@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './Button.css';
 import './Input.css';
 import { useNavigate } from "react-router-dom";
-import firebaseApp from './firebase';
+import firebaseApp from './Firebase/firebase';
 import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -10,6 +10,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 const Main = () => {
     const navigate = useNavigate();
     const auth = getAuth(firebaseApp);
+    console.log(auth);
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [user, loading, error] = useAuthState(auth);

@@ -4,13 +4,15 @@ import logo from './logo.svg';
 import './App.css';
 import Main from './Main';
 import GameSelection from './Game/GameSelection';
+import TeamsSelection from './Game/TeamsSelection';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" Component={Main}></Route>
-        <Route path="/gameSelection" Component={GameSelection}></Route>    
+        <Route path="/gameSelection" Component={GameSelection}></Route>
+        <Route path="/teamsSelection" Component={TeamsSelection}></Route>    
       </Routes>
     </BrowserRouter>
   );
