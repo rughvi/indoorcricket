@@ -37,7 +37,7 @@ const GameSelection = () => {
                     <button className="Button">Edit</button>
                 </div>
             </div>
-            <button className="Button" onClick={() => {navigate('/teamsSelection')}}> Select teams </button>
+            <button className="ActionButton" onClick={() => {navigate('/teamsSelection')}}> Select teams </button>
             
         </div>
     )

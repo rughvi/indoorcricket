@@ -12,3 +12,17 @@
     border-color: #7fffd4;
     background-color: #7fffd4;
 }
+
+.PlayerButton {
+    max-width: 200px;
+    max-height: 50px;
+    text-overflow: ellipsis;
+}
+
+.ActionButton {
+    padding: 10px 50px;
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #7fffd4;
+    width: 75%;
+}
