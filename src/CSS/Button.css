@@ -1,0 +1,14 @@
+.Button {
+    padding: 10px 50px;
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #7fffd4;
+}
+
+.ButtonSelected {
+    padding: 10px 50px;
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #7fffd4;
+    background-color: #7fffd4;
+}
