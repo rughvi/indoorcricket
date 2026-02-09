@@ -33,8 +33,8 @@ const GameSelection = () => {
                     <div >Team 1</div>
                     <button className="Button" onClick={() => {navigate('/teamSelection/1')}}>Edit</button>
                 </div>
-                <p>
-                    {team1Players.map(p => p.name).join(", ")}
+                <p style={{fontSize: 15, "width": "100%"}}>
+                    Players: {team1Players.map(p => p.name).join(", ")}
                 </p>
             </div>
             <div className="GameCard">
@@ -42,8 +42,8 @@ const GameSelection = () => {
                     <div >Team 2</div>
                     <button className="Button" onClick={() => {navigate('/teamSelection/2')}}>Edit</button>
                 </div>
-                <p>
-                    {team2Players.map(p => p.name).join(", ")}
+                <p style={{fontSize: 15, "width": "100%"}}>
+                    Players: {team2Players.map(p => p.name).join(", ")}
                 </p>
             </div>
             <button className="ActionButton" onClick={() => {navigate('/teamsSelection/2')}}> Select teams </button>

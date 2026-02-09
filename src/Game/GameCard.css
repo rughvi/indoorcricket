@@ -7,7 +7,7 @@
   justify-content: space-around;
   font-size: calc(10px + 2vmin);
   color: #7e9ea6;
-  width: 100%;
+  width: 90%;
 }
 
 .GameCard-header {
@@ -16,7 +16,7 @@
   align-items: center;
   font-size: calc(12px + 2vmin);
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .GameCard-body {
