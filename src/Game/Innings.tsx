@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ReactComponent as Edit} from '../edit.svg';
+import ScoreKeyboard from "./ScoreKeyboard";
 
 const Innings = () => {
     const { inningsId } = useParams();
@@ -29,6 +30,8 @@ const Innings = () => {
                     <button className="Button" onClick={() => {}}>Start</button>
                      <Edit style={{height: "50px", width: "50px"}} />
                 </div>
+                <br />
+                <ScoreKeyboard />
             </div>
         </div>
     );
