@@ -4,7 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 import Main from './Main';
 import GameSelection from './Game/GameSelection';
-import TeamsSelection from './Game/TeamsSelection';
 import TeamSelection from './Game/TeamSelection';
 
 function App() {
@@ -13,7 +12,6 @@ function App() {
       <Routes>
         <Route path="/" Component={Main}></Route>
         <Route path="/gameSelection" Component={GameSelection}></Route>
-        <Route path="/teamsSelection" Component={TeamsSelection}></Route>
         <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>    
       </Routes>
     </BrowserRouter>

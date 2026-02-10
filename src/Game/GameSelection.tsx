@@ -60,7 +60,7 @@ const GameSelection = () => {
                             onClick={() => dispatch(setTeamBattingFirst({teamBattingFirst: Teams.Two}))}>Team 2</button>
                 </div>
             </div>
-            <button className="ActionButton" onClick={() => {navigate('/teamsSelection/2')}}> Select teams </button>
+            <button className="ActionButton">Start game</button>
             
         </div>
     )
