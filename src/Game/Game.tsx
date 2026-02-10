@@ -19,7 +19,7 @@ const Game = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
-                    <button className="Button" onClick={() => {}}>Start</button>
+                    <button className="Button" onClick={() => {navigate('/innings/1')}}>Start</button>
                 </div>
                 <div className="GameCard-header">
                    <div>Runs: {0}</div>
@@ -43,7 +43,7 @@ const Game = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
-                    <button className="Button" onClick={() => {}}>Start</button>
+                    <button className="Button" onClick={() => {navigate('/innings/2')}}>Start</button>
                 </div>
                 <div className="GameCard-header">
                    <div>Runs: {0}</div>
