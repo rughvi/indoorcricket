@@ -5,6 +5,7 @@ import './App.css';
 import Main from './Main';
 import GameSelection from './Game/GameSelection';
 import TeamSelection from './Game/TeamSelection';
+import Game from './Game/Game';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" Component={Main}></Route>
         <Route path="/gameSelection" Component={GameSelection}></Route>
+        <Route path="/game" Component={Game}></Route>
         <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>    
       </Routes>
     </BrowserRouter>

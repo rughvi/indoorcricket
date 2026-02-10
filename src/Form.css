@@ -9,3 +9,7 @@
   color: #7e9ea6;
 }
 
+.line {
+  border-bottom: 1px solid #888;
+  width: -webkit-fill-available;
+}

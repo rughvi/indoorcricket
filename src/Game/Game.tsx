@@ -1,0 +1,71 @@
+import React from "react";
+import '../Form.css';
+import './GameCard.css';
+import '../CSS/Button.css';
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { IRootState } from "../store/store";
+import { Player } from "../Models/Player";
+import { Teams } from "../Models/Teams";
+const Game = () => {
+    const navigate = useNavigate();
+    const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
+    const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
+    const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.teamBattingFirst);
+
+    return (
+        <div className="Form">
+            Game
+            <div className="GameCard">
+                <div className="GameCard-header">
+                    <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
+                    <button className="Button" onClick={() => {}}>Start</button>
+                </div>
+                <div className="GameCard-header">
+                   <div>Runs: {0}</div>
+                </div>
+                <br/>
+                <div className="GameCard-header">
+                   <div>Wickets: {0}</div>
+                </div>
+                <br/>
+                <div className="GameCard-header">
+                   <div>Overs: {0.0}</div>
+                </div>
+                <br />
+                <div className="GameCard-header">
+                   <div>Batting: {teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</div>
+                </div>
+                <p style={{fontSize: 15, "width": "100%"}}>
+                    Players: 
+                </p>
+            </div>
+            <div className="GameCard">
+                <div className="GameCard-header">
+                    <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
+                    <button className="Button" onClick={() => {}}>Start</button>
+                </div>
+                <div className="GameCard-header">
+                   <div>Runs: {0}</div>
+                </div>
+                <br/>
+                <div className="GameCard-header">
+                   <div>Wickets: {0}</div>
+                </div>
+                <br/>
+                <div className="GameCard-header">
+                   <div>Overs: {0.0}</div>
+                </div>
+                <br />
+                <div className="GameCard-header">
+                   <div>Batting: {teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</div>
+                </div>
+                <p style={{fontSize: 15, "width": "100%"}}>
+                    Players: 
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default Game;

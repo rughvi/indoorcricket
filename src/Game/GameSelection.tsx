@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '../App.css';
 import '../Form.css';
 import './GameCard.css';
 import '../CSS/Button.css';
@@ -60,7 +59,7 @@ const GameSelection = () => {
                             onClick={() => dispatch(setTeamBattingFirst({teamBattingFirst: Teams.Two}))}>Team 2</button>
                 </div>
             </div>
-            <button className="ActionButton">Start game</button>
+            <button className="ActionButton" onClick={() => navigate('/game')}>Start game</button>
             
         </div>
     )
