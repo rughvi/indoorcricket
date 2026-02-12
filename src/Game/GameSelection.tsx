@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../Form.css';
 import './GameCard.css';
@@ -9,6 +9,8 @@ import { setTeamBattingFirst } from "../store/slices/gameSlice";
 import { IRootDispatch, IRootState } from "../store/store";
 import { Teams } from "../Models/Teams";
 import { fetchAllPlayers } from "../Services/PlayerService";
+import { createNewGame } from "../Services/GameService";
+import { Game } from '../Models/Game';
 
 const GameSelection = () => {
     const navigate = useNavigate();
@@ -16,10 +18,22 @@ const GameSelection = () => {
     const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
     const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
     const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.teamBattingFirst);
+    const [ error, setError ] = useState<string>('');
 
     useEffect(() => {
         dispatch(fetchAllPlayers());
     }, [dispatch]);
+
+    const startGame = async () => {
+        if(team1Players.length === 0 || team2Players.length === 0) {
+            setError('Please select players for the teams');
+            return;
+        }
+
+        const game: Game = {team1: [], team2: [], teamBattingFirst};
+        await dispatch(createNewGame(game)).unwrap();
+        navigate('/game');
+    };
 
     return (
         <div className="Form">
@@ -52,8 +66,10 @@ const GameSelection = () => {
                             onClick={() => dispatch(setTeamBattingFirst({teamBattingFirst: Teams.Two}))}>Team 2</button>
                 </div>
             </div>
-            <button className="ActionButton" onClick={() => navigate('/game')}>Start game</button>
-            
+            <div className="error"> 
+                <p> { error } </p>
+                <button className="ActionButton" onClick={() => startGame()}>Start game</button>
+            </div>
         </div>
     )
 };

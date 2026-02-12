@@ -68,13 +68,23 @@ const Main = () => {
     }
 
     if(fetchCurrentGameStatus === Status.Fulfilled) {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <button className="ActionButton" onClick={() => {navigate('/gameSelection')}}> Play a game </button>
-                </header>
-            </div>
-        );
+        if(currentGame.gameId !== '') {
+            return (
+                <div className="App">
+                    <header className="App-header">
+                        <button className="ActionButton" onClick={() => {navigate('/gameSelection')}}> Resume game </button>
+                    </header>
+                </div>
+            );
+        } else {
+            return (
+                <div className="App">
+                    <header className="App-header">
+                        <button className="ActionButton" onClick={() => {navigate('/gameSelection')}}> Play a game </button>
+                    </header>
+                </div>
+            );
+        }        
     } else if (fetchCurrentGameStatus === Status.Pending) {
         return (
             <div className="App"> 

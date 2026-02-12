@@ -13,3 +13,13 @@
   border-bottom: 1px solid #888;
   width: -webkit-fill-available;
 }
+
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
+  color: rgb(209, 23, 23);
+  width: 100%;
+}
