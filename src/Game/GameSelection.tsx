@@ -30,7 +30,7 @@ const GameSelection = () => {
             return;
         }
 
-        const game: Game = {team1: [], team2: [], teamBattingFirst};
+        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst};
         await dispatch(createNewGame(game)).unwrap();
         navigate('/game');
     };
