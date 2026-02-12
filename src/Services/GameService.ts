@@ -12,8 +12,7 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
 
     let currentGame: CurrentGame = { gameId: '' }
     if(currentGameSnapshot.exists()) {
-        console.log('current game data')
-        console.log(currentGameSnapshot.data);
+        currentGame = { gameId: currentGameSnapshot.data().gameId };
     } 
     
     return currentGame;
