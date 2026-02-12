@@ -5,7 +5,7 @@ import '../CSS/TeamSelection.css';
 import { Player, UIPlayer } from "../Models/Player";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../store/store";
-import { assignPlayersToTeams } from "../store/slices/playerSlice";
+import { assignPlayersToTeams } from "../store/slices/gameSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TeamSelection= () => {

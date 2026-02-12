@@ -15,9 +15,9 @@ import { Game } from '../Models/Game';
 const GameSelection = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<IRootDispatch>();
-    const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
-    const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
-    const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.teamBattingFirst);
+    const team1Players = useSelector<IRootState, Player[]>(state => state.game.currentGame.game.team1);
+    const team2Players = useSelector<IRootState, Player[]>(state => state.game.currentGame.game.team2);
+    const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.currentGame.game.teamBattingFirst);
     const [ error, setError ] = useState<string>('');
 
     useEffect(() => {

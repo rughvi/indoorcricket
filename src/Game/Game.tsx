@@ -11,7 +11,7 @@ const Game = () => {
     const navigate = useNavigate();
     const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
     const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
-    const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.teamBattingFirst);
+    const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.currentGame.game.teamBattingFirst);
 
     return (
         <div className="Form">

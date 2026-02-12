@@ -8,14 +8,12 @@ export interface GameSliceState {
     fetchCurrentGameStatus: Status;
     fetchCurrentGameError: string;
     currentGame: CurrentGame;
-    teamBattingFirst: Teams;
 };
 
 const gameSliceInitialState: GameSliceState = {
     fetchCurrentGameStatus: Status.Idle,
     fetchCurrentGameError: '',
-    currentGame: { gameId: '' },
-    teamBattingFirst: 1
+    currentGame: { gameId: '', game: { team1: [], team2: [], teamBattingFirst: Teams.One}}
 };
 
 export const gameSlice = createSlice({
@@ -23,7 +21,18 @@ export const gameSlice = createSlice({
     initialState: gameSliceInitialState,
     reducers: {
         setTeamBattingFirst: (state, action) => {
-            state.teamBattingFirst = action.payload.teamBattingFirst;
+            state.currentGame.game.teamBattingFirst = action.payload.teamBattingFirst;
+        },
+        assignPlayersToTeams: (state, action) => {
+            if(action.payload.team === "1") {
+                state.currentGame.game.team1 = Object.assign([], action.payload.players);
+            } else if (action.payload.team === "2") {
+                state.currentGame.game.team2 = Object.assign([], action.payload.players);
+            }
+        },
+        clearTeamPlayers: (state) => {
+            state.currentGame.game.team1 = []
+            state.currentGame.game.team2 = []
         }
     },
     extraReducers: (builder) => {
@@ -42,5 +51,5 @@ export const gameSlice = createSlice({
     }
 });
 
-export const { setTeamBattingFirst } = gameSlice.actions;
+export const { setTeamBattingFirst, assignPlayersToTeams, clearTeamPlayers } = gameSlice.actions;
 export default gameSlice.reducer;

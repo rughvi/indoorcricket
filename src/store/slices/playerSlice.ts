@@ -23,17 +23,7 @@ export const playerSlice = createSlice({
     name: 'player',
     initialState: playerSliceInitialState,
     reducers: {
-        assignPlayersToTeams: (state, action) => {
-            if(action.payload.team === "1") {
-                state.team1Players = Object.assign([], action.payload.players);
-            } else if (action.payload.team === "2") {
-                state.team2Players = Object.assign([], action.payload.players);
-            }
-        },
-        clearTeamPlayers: (state) => {
-            state.team1Players = []
-            state.team2Players = []
-        }
+        
     },
     extraReducers: (builder) => {
         builder
@@ -51,5 +41,5 @@ export const playerSlice = createSlice({
     }
 });
 
-export const { assignPlayersToTeams, clearTeamPlayers } = playerSlice.actions;
+// export const { assignPlayersToTeams, clearTeamPlayers } = playerSlice.actions;
 export default playerSlice.reducer;
