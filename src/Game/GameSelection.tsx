@@ -3,30 +3,25 @@ import { useNavigate } from "react-router-dom";
 import '../Form.css';
 import './GameCard.css';
 import '../CSS/Button.css';
-import { getPlayers } from "../Services/PlayerService";
+// import { getPlayers } from "../Services/PlayerService";
 import { Player } from "../Models/Player";
 import { useDispatch, useSelector } from "react-redux";
-import { assignAllPlayers } from "../store/slices/playerSlice";
+// import { assignAllPlayers } from "../store/slices/playerSlice";
 import { setTeamBattingFirst } from "../store/slices/gameSlice";
-import { IRootState } from "../store/store";
+import { IRootDispatch, IRootState } from "../store/store";
 import { Teams } from "../Models/Teams";
+import { fetchAllPlayers } from "../Services/PlayerService";
 
 const GameSelection = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<IRootDispatch>();
     const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
     const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
     const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.teamBattingFirst);
 
     useEffect(() => {
-        const getPlayersData = async () => {
-            const players: Player[] = await getPlayers();
-            
-            dispatch(assignAllPlayers(players));
-        };
-
-        getPlayersData();
-    }, []);
+        dispatch(fetchAllPlayers());
+    }, [dispatch]);
 
     return (
         <div className="Form">
