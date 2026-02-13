@@ -9,8 +9,8 @@ import { Player } from "../Models/Player";
 import { Teams } from "../Models/Teams";
 const Game = () => {
     const navigate = useNavigate();
-    const team1Players = useSelector<IRootState, Player[]>(state => state.player.team1Players);
-    const team2Players = useSelector<IRootState, Player[]>(state => state.player.team2Players);
+    const team1Players = useSelector<IRootState, Player[]>(state => state.game.currentGame.game.team1);
+    const team2Players = useSelector<IRootState, Player[]>(state => state.game.currentGame.game.team2);
     const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.currentGame.game.teamBattingFirst);
 
     return (
@@ -37,7 +37,7 @@ const Game = () => {
                    <div>Batting: {teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</div>
                 </div>
                 <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: 
+                    Players: {team1Players.map(p => p.name).join(", ")}
                 </p>
             </div>
             <div className="GameCard">
@@ -61,7 +61,7 @@ const Game = () => {
                    <div>Batting: {teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</div>
                 </div>
                 <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: 
+                    Players: {team2Players.map(p => p.name).join(", ")}
                 </p>
             </div>
         </div>

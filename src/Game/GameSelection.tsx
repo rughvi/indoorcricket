@@ -11,6 +11,7 @@ import { Teams } from "../Models/Teams";
 import { fetchAllPlayers } from "../Services/PlayerService";
 import { createNewGame } from "../Services/GameService";
 import { Game } from '../Models/Game';
+import { InningsStatus } from "../Models/InningsStatus";
 
 const GameSelection = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const GameSelection = () => {
             return;
         }
 
-        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst};
+        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted};
         await dispatch(createNewGame(game)).unwrap();
         navigate('/game');
     };

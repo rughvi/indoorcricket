@@ -72,7 +72,7 @@ const Main = () => {
             return (
                 <div className="App">
                     <header className="App-header">
-                        <button className="ActionButton" onClick={() => {navigate('/gameSelection')}}> Resume game </button>
+                        <button className="ActionButton" onClick={() => {navigate('/game')}}> Resume game </button>
                     </header>
                 </div>
             );

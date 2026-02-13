@@ -3,6 +3,7 @@ import { Teams } from '../../Models/Teams';
 import { fetchCurrentGame } from '../../Services/GameService';
 import { Status } from '../status';
 import { CurrentGame } from '../../Models/CurrentGame';
+import { InningsStatus } from '../../Models/InningsStatus';
 
 export interface GameSliceState {
     fetchCurrentGameStatus: Status;
@@ -13,7 +14,7 @@ export interface GameSliceState {
 const gameSliceInitialState: GameSliceState = {
     fetchCurrentGameStatus: Status.Idle,
     fetchCurrentGameError: '',
-    currentGame: { gameId: '', game: { team1: [], team2: [], teamBattingFirst: Teams.One}}
+    currentGame: { gameId: '', game: { team1: [], team2: [], teamBattingFirst: Teams.One, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted}}
 };
 
 export const gameSlice = createSlice({
