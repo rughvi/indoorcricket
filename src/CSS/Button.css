@@ -26,3 +26,12 @@
     border-color: #7fffd4;
     width: 75%;
 }
+
+.CurrentPlayerButton {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    border-color: #7fffd4;
+    width: 135px;
+
+}

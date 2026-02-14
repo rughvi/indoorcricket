@@ -34,6 +34,9 @@ export const gameSlice = createSlice({
         clearTeamPlayers: (state) => {
             state.currentGame.game.team1 = []
             state.currentGame.game.team2 = []
+        },
+        updateInningsCurrentPlayer: (state, action) => {
+            state.currentGame.game = { ...state.currentGame.game, [action.payload.key] : action.payload.value }
         }
     },
     extraReducers: (builder) => {
@@ -52,5 +55,5 @@ export const gameSlice = createSlice({
     }
 });
 
-export const { setTeamBattingFirst, assignPlayersToTeams, clearTeamPlayers } = gameSlice.actions;
+export const { setTeamBattingFirst, assignPlayersToTeams, clearTeamPlayers, updateInningsCurrentPlayer } = gameSlice.actions;
 export default gameSlice.reducer;

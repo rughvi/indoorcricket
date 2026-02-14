@@ -7,6 +7,7 @@ import GameSelection from './Game/GameSelection';
 import TeamSelection from './Game/TeamSelection';
 import Game from './Game/Game';
 import Innings from './Game/Innings';
+import CurrentPlayerSelection from './Game/CurrentPlayerSelection';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <Route path="/gameSelection" Component={GameSelection}></Route>
         <Route path="/game" Component={Game}></Route>
         <Route path="/innings/:inningsId" Component={Innings}></Route>
-        <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>    
+        <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>
+        <Route path="/currentPlayerSelection/:inningsId/:currentPlayerId" Component={CurrentPlayerSelection}></Route>
       </Routes>
     </BrowserRouter>
   );

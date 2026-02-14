@@ -1,34 +1,57 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as Edit} from '../edit.svg';
 import ScoreKeyboard from "./ScoreKeyboard";
+import { useSelector } from "react-redux";
+import { IRootState } from "../store/store";
+import { CurrentGame } from "../Models/CurrentGame";
+import { Teams } from "../Models/Teams";
+import { Player } from "../Models/Player";
+import '../Form.css';
 
 const Innings = () => {
     const { inningsId } = useParams();
+    const navigate = useNavigate();
+    const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
+    const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
+    const [currentPlayer1, setCurrentPlayer1] = useState<Player>();
+    const [currentPlayer2, setCurrentPlayer2] = useState<Player>();
+    console.log(currentGame);
+    useEffect(() => {
+        setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
+        if(inningsId == "1") {
+            setCurrentPlayer1(currentGame.game.innings1CurrentPlayer1);
+            setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);    
+        } else {
+            setCurrentPlayer1(currentGame.game.innings2CurrentPlayer1);
+            setCurrentPlayer2(currentGame.game.innings2CurrentPlayer2);
+        }
+    }, [currentGame]);
+
+    const choosePlayer = (currentPlayerId: number) => {
+        navigate(`/currentPlayerSelection/${inningsId}/${currentPlayerId}`);
+    };
+
     return (
         <div className="Form">
             <div className="GameCard">
                 <div className="GameCard-header">
-                   <div>Batting: {0}</div>
+                    <div>Innings: 1</div>
+                   <div>Batting: T{battingTeam}</div>
                 </div>
                 <br />
                 <div className="GameCard-header">
-                   <div>Runs: {0}</div>
+                   <div>Runs: {1500}</div>
+                   <div>Overs: {198.9}</div>
+                   <div>Wickets: {99}</div>
                 </div>
                 <br/>
-                <div className="GameCard-header">
-                   <div>Wickets: {0}</div>
-                </div>
-                <br/>
-                <div className="GameCard-header">
-                   <div>Overs: {0.0}</div>
-                </div>
                 <div>display 5/7 balls</div>
                 <div className="GameCard-header">
-                    <button className="Button" onClick={() => {}}>Start</button>
-                     <Edit style={{height: "50px", width: "50px"}}/>
-                    <button className="Button" onClick={() => {}}>Start</button>
-                     <Edit style={{height: "50px", width: "50px"}} />
+                    <button className="CurrentPlayerButton" onClick={() => {}}>{currentPlayer1?.name}</button>
+                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer(1)}}/>
+                    <button className="CurrentPlayerButton" onClick={() => {}}>{currentPlayer2?.name}</button>
+                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer(2)}}/>
                 </div>
                 <br />
                 <ScoreKeyboard />

@@ -8,4 +8,8 @@ export interface Game {
     teamBattingFirst: Teams;
     innings1Status: InningsStatus;
     innings2Status: InningsStatus;
+    innings1CurrentPlayer1?: Player;
+    innings1CurrentPlayer2?: Player;
+    innings2CurrentPlayer1?: Player;
+    innings2CurrentPlayer2?: Player;
 }
