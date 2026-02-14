@@ -1,5 +1,5 @@
 export enum InningsStatus {
-    NotStarted,
-    InProgress,
-    Finished
+    NotStarted = 'Not started',
+    InProgress = 'Inprogress',
+    Finished = 'Finished'
 }
