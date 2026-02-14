@@ -71,7 +71,7 @@ const Game = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
-                    <button className="Button" onClick={() => {navigate('/innings/2')}}>{innings2Action}</button>
+                    <button className="Button" disabled={innings1Action !== 'Finished'} onClick={() => {navigate('/innings/2')}}>{innings2Action}</button>
                 </div>
                 <div className="GameCard-header">
                    <div>Runs: {0}</div>
