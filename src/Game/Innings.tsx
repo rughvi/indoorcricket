@@ -16,6 +16,8 @@ const Innings = () => {
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
     const [currentPlayer1, setCurrentPlayer1] = useState<Player>();
     const [currentPlayer2, setCurrentPlayer2] = useState<Player>();
+    const [currentBowler, setCurrentBowler] = useState<Player>();
+
     console.log(currentGame);
     useEffect(() => {
         setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
@@ -26,10 +28,12 @@ const Innings = () => {
             setCurrentPlayer1(currentGame.game.innings2CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings2CurrentPlayer2);
         }
+
+        setCurrentBowler(currentGame.game.inningsCurrentBowler);
     }, [currentGame]);
 
-    const choosePlayer = (currentPlayerId: number) => {
-        navigate(`/currentPlayerSelection/${inningsId}/${currentPlayerId}`);
+    const choosePlayer = (playerBowler: string, currentPlayerId: number) => {
+        navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`);
     };
 
     return (
@@ -48,10 +52,14 @@ const Innings = () => {
                 <br/>
                 <div>display 5/7 balls</div>
                 <div className="GameCard-header">
-                    <button className="CurrentPlayerButton" onClick={() => {}}>{currentPlayer1?.name}</button>
-                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer(1)}}/>
-                    <button className="CurrentPlayerButton" onClick={() => {}}>{currentPlayer2?.name}</button>
-                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer(2)}}/>
+                    <button className="CurrentPlayerButton">{currentBowler?.name}</button>
+                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                </div>
+                <div className="GameCard-header">
+                    <button className="CurrentPlayerButton">{currentPlayer1?.name}</button>
+                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                    <button className="CurrentPlayerButton">{currentPlayer2?.name}</button>
+                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
                 </div>
                 <br />
                 <ScoreKeyboard />

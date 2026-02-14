@@ -7,7 +7,7 @@ import GameSelection from './Game/GameSelection';
 import TeamSelection from './Game/TeamSelection';
 import Game from './Game/Game';
 import Innings from './Game/Innings';
-import CurrentPlayerSelection from './Game/CurrentPlayerSelection';
+import CurrentPlayerBowlerSelection from './Game/CurrentPlayerBowlerSelection';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Route path="/game" Component={Game}></Route>
         <Route path="/innings/:inningsId" Component={Innings}></Route>
         <Route path="/teamSelection/:teamIndex" Component={TeamSelection}></Route>
-        <Route path="/currentPlayerSelection/:inningsId/:currentPlayerId" Component={CurrentPlayerSelection}></Route>
+        <Route path="/current/:playerbowler/selection/:inningsId/:currentPlayerId" Component={CurrentPlayerBowlerSelection}></Route>
       </Routes>
     </BrowserRouter>
   );

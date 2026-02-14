@@ -28,6 +28,7 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 teamBattingFirst: gameSnapshot.data().teamBattingFirst, 
                 innings1Status:  gameSnapshot.data().innings1Status,
                 innings2Status: gameSnapshot.data().innings2Status,
+                inningsCurrentBowler: gameSnapshot.data().inningsCurrentBowler,
                 innings1CurrentPlayer1: gameSnapshot.data().innings1CurrentPlayer1,
                 innings1CurrentPlayer2: gameSnapshot.data().innings1CurrentPlayer2,
                 innings2CurrentPlayer1: gameSnapshot.data().innings2CurrentPlayer1,
@@ -48,6 +49,13 @@ export const createNewGame = createAsyncThunk('game/createNewGame', async (game:
 });
 
 export const updateInningsCurrentPlayer = createAsyncThunk('game/updateGame', async (input: {gameId: string, key: string, value: Player}) => {
+    if(input.gameId) {
+        const gameDocRef = doc(db, 'games', input.gameId);
+        await setDoc(gameDocRef, { [input.key] : input.value}, {merge: true});
+    }
+});
+
+export const updateInningsCurrentBowler = createAsyncThunk('game/updateGame', async (input: {gameId: string, key: string, value: Player}) => {
     if(input.gameId) {
         const gameDocRef = doc(db, 'games', input.gameId);
         await setDoc(gameDocRef, { [input.key] : input.value}, {merge: true});
