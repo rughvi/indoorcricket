@@ -33,8 +33,10 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings1CurrentPlayer2: gameSnapshot.data().innings1CurrentPlayer2,
                 innings2CurrentPlayer1: gameSnapshot.data().innings2CurrentPlayer1,
                 innings2CurrentPlayer2: gameSnapshot.data().innings2CurrentPlayer2,
-                innings1Score: gameSnapshot.data().innings1Score,
-                innings2Score: gameSnapshot.data().innings2Score
+                innings1PlayersScore: gameSnapshot.data().innings1PlayersScore,
+                innings2PlayersScore: gameSnapshot.data().innings2PlayersScore,
+                innings1TotalRuns: gameSnapshot.data().innings1TotalRuns,
+                innings2TotalRuns: gameSnapshot.data().innings2TotalRuns
             };
         }        
     }
@@ -80,8 +82,8 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
             throw "Document does not exist!";
         }
 
-        const inningsScoreKey = (input.inningsId == "1"? 'innings1Score': 'innings2Score');
-        const inningsScorePlayerKey = `${inningsScoreKey}.${input.player.name}`;
+        const inningsScoreKey = (input.inningsId == "1"? 'innings1PlayersScore': 'innings2PlayersScore');
+        const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
         
         const gameData = gameDoc.data();
         
@@ -94,5 +96,8 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         } else {
             await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [input.score]}}, {merge: true});
         }
+
+
+        await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
     });
 });

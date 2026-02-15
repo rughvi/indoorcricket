@@ -13,6 +13,8 @@ export interface Game {
     innings1CurrentPlayer2?: Player;
     innings2CurrentPlayer1?: Player;
     innings2CurrentPlayer2?: Player;
-    innings1Score?: {};
-    innings2Score?: {};
+    innings1PlayersScore?: {};
+    innings2PlayersScore?: {};
+    innings1TotalRuns?: number;
+    innings2TotalRuns?: number;
 }

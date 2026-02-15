@@ -8,7 +8,7 @@ import { CurrentGame } from "../Models/CurrentGame";
 import { Teams } from "../Models/Teams";
 import { Player } from "../Models/Player";
 import '../Form.css';
-import { updateInningsCurrentPlayerScore } from "../Services/GameService";
+import { fetchCurrentGame, updateInningsCurrentPlayerScore } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
 
 const Innings = () => {
@@ -47,6 +47,7 @@ const Innings = () => {
             return;
         }
         await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
+        await dispatch(fetchCurrentGame()).unwrap();
     };
 
     return (
@@ -58,7 +59,7 @@ const Innings = () => {
                 </div>
                 <br />
                 <div className="GameCard-header">
-                   <div>Runs: {1500}</div>
+                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
                    <div>Overs: {198.9}</div>
                    <div>Wickets: {99}</div>
                 </div>
