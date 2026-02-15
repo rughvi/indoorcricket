@@ -51,7 +51,6 @@ export const createNewGame = createAsyncThunk('game/createNewGame', async (game:
 });
 
 export const endInnings = createAsyncThunk('game/endInnings', async (input: {gameId: string, inningsId: string}) => {
-    console.log(input);
     if(input.gameId && input.inningsId) {
         const key = `innings${input.inningsId}Status`;
         const gameDocRef = doc(db, 'games', input.gameId);
@@ -74,7 +73,6 @@ export const updateInningsCurrentBowler = createAsyncThunk('game/updateGame', as
 });
 
 export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInningsCurrentPlayerScore', async (input: {gameId: string, inningsId: string, player: Player, score: number}) => {
-    console.log('updateInningsCurrentPlayerScore')
     await runTransaction(db, async (transaction) => {
         const gameDocRef = doc(db, 'games', input.gameId);
         const gameDoc = await transaction.get(gameDocRef);
@@ -86,22 +84,15 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         const inningsScorePlayerKey = `${inningsScoreKey}.${input.player.name}`;
         
         const gameData = gameDoc.data();
-        console.log(gameData);
+        
         const inningsScore = gameData[inningsScoreKey];
 
         const inningsPlayerScore = inningsScore[input.player.name];
-        console.log(inningsPlayerScore);
-
+        
         if(inningsPlayerScore) {
-            console.log('edit')
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: arrayUnion(`${input.score}`)}}, {merge: true});
         } else {
-            console.log('new')
-            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: []}}, {merge: true});
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [input.score]}}, {merge: true});
         }
-        console.log(inningsScore);
     });
-    
-    // const gameDocRef = doc(db, 'games', input.gameId);
-    // const key = input.player.name;
-    // await setDoc(gameDocRef, { [`innings${input.inningsId}Score`]: { [key] : arrayUnion(`${input.score}`)}}, {merge: true});
 });
