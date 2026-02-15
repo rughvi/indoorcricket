@@ -40,7 +40,9 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings1TotalBalls: gameSnapshot.data().innings1TotalBalls,
                 innings2TotalBalls: gameSnapshot.data().innings2TotalBalls,
                 innings1Extras: gameSnapshot.data().innings1Extras,
-                innings2Extras: gameSnapshot.data().innings2Extras
+                innings2Extras: gameSnapshot.data().innings2Extras,
+                innings1Wickets: gameSnapshot.data().innings1Wickets,
+                innings2Wickets: gameSnapshot.data().innings2Wickets,
             };
         }        
     }
@@ -106,6 +108,24 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
     });
 });
 
+export const updateInningsCurrentPlayerWicket = createAsyncThunk('game/updateInningsCurrentPlayerWicket', async (input: {gameId: string, inningsId: string, player: Player}) => {
+    await runTransaction(db, async (transaction) => {
+        const gameDocRef = doc(db, 'games', input.gameId);
+        const gameDoc = await transaction.get(gameDocRef);
+        if (!gameDoc.exists()) {
+            throw "Document does not exist!";
+        }
+
+        const inningsWicketsKey = (input.inningsId == "1"? 'innings1Wickets': 'innings2Wickets');
+        const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
+
+        const gameData = gameDoc.data();
+
+        await transaction.set(gameDocRef, {[inningsWicketsKey]: (gameData[inningsWicketsKey] + 1) }, {merge: true})
+        await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
+    });
+});
+
 export const updateInningsExtras = createAsyncThunk('game/updateInningsExtras', async (input: {gameId: string, inningsId: string, score: number}) => {
     await runTransaction(db, async (transaction) => {
         const gameDocRef = doc(db, 'games', input.gameId);
@@ -118,8 +138,7 @@ export const updateInningsExtras = createAsyncThunk('game/updateInningsExtras', 
         const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
         const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
 
-        const gameData = gameDoc.data();        
-        const inningsExtrasScore = gameData[inningsExtrasKey];
+        const gameData = gameDoc.data();
 
         await transaction.set(gameDocRef, {[inningsExtrasKey]: (gameData[inningsExtrasKey] + input.score) }, {merge: true})
         await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})

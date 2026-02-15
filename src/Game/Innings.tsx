@@ -8,7 +8,7 @@ import { CurrentGame } from "../Models/CurrentGame";
 import { Teams } from "../Models/Teams";
 import { Player } from "../Models/Player";
 import '../Form.css';
-import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsExtras } from "../Services/GameService";
+import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
 
 const Innings = () => {
@@ -48,6 +48,8 @@ const Innings = () => {
         }
         if((scoreKey === ScoreKey.Wide)) { /* This also applies to NoBall */
             await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKey})).unwrap();
+        } else if(scoreKey == ScoreKey.Wicket) {
+            await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!})).unwrap();
         } else {
             await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
         }
@@ -70,7 +72,7 @@ const Innings = () => {
                 <br/>
                 <div className="GameCard-header">
                    <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
-                   <div>Wickets: {99}</div>
+                   <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
                 </div>
                 <br/>
                 <div>display 5/7 balls</div>

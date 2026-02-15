@@ -12,5 +12,6 @@ export enum ScoreKey {
     NoBallPlusFour = 7,
     NoBallPlusFive = 8,
     NoBallPlusSix = 9,
-    Wide = 3
+    Wide = 3,
+    Wicket = 999
 }
