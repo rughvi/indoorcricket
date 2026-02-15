@@ -46,7 +46,7 @@ const Innings = () => {
             setError('Select current players and bowlers');
             return;
         }
-        await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, player: currentBatsman!, score: scoreKey})).unwrap();
+        await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
     };
 
     return (

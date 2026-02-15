@@ -31,7 +31,7 @@ const GameSelection = () => {
             return;
         }
 
-        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted};
+        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted, innings1Score: {}, innings2Score: {}};
         await dispatch(createNewGame(game)).unwrap();
         navigate('/game');
     };

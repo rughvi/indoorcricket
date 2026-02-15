@@ -1,4 +1,4 @@
-import { doc, getDoc, addDoc, collection, setDoc, updateDoc, FieldValue, arrayUnion } from 'firebase/firestore/lite';
+import { doc, getDoc, addDoc, collection, setDoc, updateDoc, FieldValue, arrayUnion, runTransaction } from 'firebase/firestore/lite';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CurrentGame } from '../Models/CurrentGame';
 import { db } from '../Firebase/firebase';
@@ -32,7 +32,9 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings1CurrentPlayer1: gameSnapshot.data().innings1CurrentPlayer1,
                 innings1CurrentPlayer2: gameSnapshot.data().innings1CurrentPlayer2,
                 innings2CurrentPlayer1: gameSnapshot.data().innings2CurrentPlayer1,
-                innings2CurrentPlayer2: gameSnapshot.data().innings2CurrentPlayer2
+                innings2CurrentPlayer2: gameSnapshot.data().innings2CurrentPlayer2,
+                innings1Score: gameSnapshot.data().innings1Score,
+                innings2Score: gameSnapshot.data().innings2Score
             };
         }        
     }
@@ -46,6 +48,15 @@ export const createNewGame = createAsyncThunk('game/createNewGame', async (game:
     await setDoc(currentGameDocRef, <CurrentGame>{ gameId: gameDocRef.id });
 
     return gameDocRef.id;
+});
+
+export const endInnings = createAsyncThunk('game/endInnings', async (input: {gameId: string, inningsId: string}) => {
+    console.log(input);
+    if(input.gameId && input.inningsId) {
+        const key = `innings${input.inningsId}Status`;
+        const gameDocRef = doc(db, 'games', input.gameId);
+        await setDoc(gameDocRef, { [key] : 'Finished'}, {merge: true});
+    }
 });
 
 export const updateInningsCurrentPlayer = createAsyncThunk('game/updateGame', async (input: {gameId: string, key: string, value: Player}) => {
@@ -62,8 +73,35 @@ export const updateInningsCurrentBowler = createAsyncThunk('game/updateGame', as
     }
 });
 
-export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInningsCurrentPlayerScore', async (input: {gameId: string, player: Player, score: number}) => {
-    const gameDocRef = doc(db, 'games', input.gameId);
-    const key = input.player.name;
-    await setDoc(gameDocRef, { innings1Score: { [key] : arrayUnion(`${input.score}`)}}, {merge: true});
+export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInningsCurrentPlayerScore', async (input: {gameId: string, inningsId: string, player: Player, score: number}) => {
+    console.log('updateInningsCurrentPlayerScore')
+    await runTransaction(db, async (transaction) => {
+        const gameDocRef = doc(db, 'games', input.gameId);
+        const gameDoc = await transaction.get(gameDocRef);
+        if (!gameDoc.exists()) {
+            throw "Document does not exist!";
+        }
+
+        const inningsScoreKey = (input.inningsId == "1"? 'innings1Score': 'innings2Score');
+        const inningsScorePlayerKey = `${inningsScoreKey}.${input.player.name}`;
+        
+        const gameData = gameDoc.data();
+        console.log(gameData);
+        const inningsScore = gameData[inningsScoreKey];
+
+        const inningsPlayerScore = inningsScore[input.player.name];
+        console.log(inningsPlayerScore);
+
+        if(inningsPlayerScore) {
+            console.log('edit')
+        } else {
+            console.log('new')
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: []}}, {merge: true});
+        }
+        console.log(inningsScore);
+    });
+    
+    // const gameDocRef = doc(db, 'games', input.gameId);
+    // const key = input.player.name;
+    // await setDoc(gameDocRef, { [`innings${input.inningsId}Score`]: { [key] : arrayUnion(`${input.score}`)}}, {merge: true});
 });
