@@ -60,7 +60,7 @@ const Innings = () => {
                 <br />
                 <div className="GameCard-header">
                    <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
-                   <div>Overs: {198.9}</div>
+                   <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
                    <div>Wickets: {99}</div>
                 </div>
                 <br/>

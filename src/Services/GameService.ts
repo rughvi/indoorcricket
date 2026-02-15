@@ -36,7 +36,9 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings1PlayersScore: gameSnapshot.data().innings1PlayersScore,
                 innings2PlayersScore: gameSnapshot.data().innings2PlayersScore,
                 innings1TotalRuns: gameSnapshot.data().innings1TotalRuns,
-                innings2TotalRuns: gameSnapshot.data().innings2TotalRuns
+                innings2TotalRuns: gameSnapshot.data().innings2TotalRuns,
+                innings1TotalBalls: gameSnapshot.data().innings1TotalBalls,
+                innings2TotalBalls: gameSnapshot.data().innings2TotalBalls
             };
         }        
     }
@@ -84,6 +86,7 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
 
         const inningsScoreKey = (input.inningsId == "1"? 'innings1PlayersScore': 'innings2PlayersScore');
         const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
+        const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
         
         const gameData = gameDoc.data();
         
@@ -99,5 +102,6 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
 
 
         await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
+        await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
     });
 });
