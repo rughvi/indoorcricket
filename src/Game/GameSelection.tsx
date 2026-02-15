@@ -31,7 +31,7 @@ const GameSelection = () => {
             return;
         }
 
-        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted, innings1PlayersScore: {}, innings2PlayersScore: {}, innings1TotalRuns: 0, innings2TotalRuns: 0, innings1TotalBalls: 0, innings2TotalBalls: 0};
+        const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted, innings1PlayersScore: {}, innings2PlayersScore: {}, innings1TotalRuns: 0, innings2TotalRuns: 0, innings1TotalBalls: 0, innings2TotalBalls: 0, innings1Extras: 0, innings2Extras: 0};
         await dispatch(createNewGame(game)).unwrap();
         navigate('/game');
     };

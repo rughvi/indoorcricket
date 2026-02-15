@@ -19,4 +19,6 @@ export interface Game {
     innings2TotalRuns?: number;
     innings1TotalBalls?: number;
     innings2TotalBalls?: number;
+    innings1Extras?: number;
+    innings2Extras?: number;
 }

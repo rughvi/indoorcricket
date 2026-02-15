@@ -8,7 +8,7 @@ import { CurrentGame } from "../Models/CurrentGame";
 import { Teams } from "../Models/Teams";
 import { Player } from "../Models/Player";
 import '../Form.css';
-import { fetchCurrentGame, updateInningsCurrentPlayerScore } from "../Services/GameService";
+import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsExtras } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
 
 const Innings = () => {
@@ -46,7 +46,12 @@ const Innings = () => {
             setError('Select current players and bowlers');
             return;
         }
-        await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
+        if((scoreKey === ScoreKey.Wide)) { /* This also applies to NoBall */
+            await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKey})).unwrap();
+        } else {
+            await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
+        }
+        
         await dispatch(fetchCurrentGame()).unwrap();
     };
 
@@ -61,6 +66,10 @@ const Innings = () => {
                 <div className="GameCard-header">
                    <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
                    <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
+                </div>
+                <br/>
+                <div className="GameCard-header">
+                   <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
                    <div>Wickets: {99}</div>
                 </div>
                 <br/>

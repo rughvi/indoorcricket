@@ -38,7 +38,9 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings1TotalRuns: gameSnapshot.data().innings1TotalRuns,
                 innings2TotalRuns: gameSnapshot.data().innings2TotalRuns,
                 innings1TotalBalls: gameSnapshot.data().innings1TotalBalls,
-                innings2TotalBalls: gameSnapshot.data().innings2TotalBalls
+                innings2TotalBalls: gameSnapshot.data().innings2TotalBalls,
+                innings1Extras: gameSnapshot.data().innings1Extras,
+                innings2Extras: gameSnapshot.data().innings2Extras
             };
         }        
     }
@@ -88,10 +90,8 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
         const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
         
-        const gameData = gameDoc.data();
-        
+        const gameData = gameDoc.data();        
         const inningsScore = gameData[inningsScoreKey];
-
         const inningsPlayerScore = inningsScore[input.player.name];
         
         if(inningsPlayerScore) {
@@ -101,6 +101,27 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         }
 
 
+        await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
+        await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
+    });
+});
+
+export const updateInningsExtras = createAsyncThunk('game/updateInningsExtras', async (input: {gameId: string, inningsId: string, score: number}) => {
+    await runTransaction(db, async (transaction) => {
+        const gameDocRef = doc(db, 'games', input.gameId);
+        const gameDoc = await transaction.get(gameDocRef);
+        if (!gameDoc.exists()) {
+            throw "Document does not exist!";
+        }
+
+        const inningsExtrasKey = (input.inningsId == "1"? 'innings1Extras': 'innings2Extras');
+        const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
+        const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
+
+        const gameData = gameDoc.data();        
+        const inningsExtrasScore = gameData[inningsExtrasKey];
+
+        await transaction.set(gameDocRef, {[inningsExtrasKey]: (gameData[inningsExtrasKey] + input.score) }, {merge: true})
         await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
         await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
     });
