@@ -2,23 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as Edit} from '../edit.svg';
 import ScoreKeyboard from "./ScoreKeyboard";
-import { useSelector } from "react-redux";
-import { IRootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootDispatch, IRootState } from "../store/store";
 import { CurrentGame } from "../Models/CurrentGame";
 import { Teams } from "../Models/Teams";
 import { Player } from "../Models/Player";
 import '../Form.css';
+import { updateInningsCurrentPlayerScore } from "../Services/GameService";
+import { ScoreKey } from "../Models/ScoreKey";
 
 const Innings = () => {
     const { inningsId } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch<IRootDispatch>();
     const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
     const [currentPlayer1, setCurrentPlayer1] = useState<Player>();
     const [currentPlayer2, setCurrentPlayer2] = useState<Player>();
+    const [currentBatsman, setCurrentBatsman] = useState<Player>();
     const [currentBowler, setCurrentBowler] = useState<Player>();
+    const [error, setError] = useState<string>('');
 
-    console.log(currentGame);
     useEffect(() => {
         setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
         if(inningsId == "1") {
@@ -34,6 +38,15 @@ const Innings = () => {
 
     const choosePlayer = (playerBowler: string, currentPlayerId: number) => {
         navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`);
+    };
+
+    const onClickScoreKey = async (scoreKey: ScoreKey) => {
+        setError('');
+        if((currentBowler?.name?.length ??0) === 0 || (currentBatsman?.name?.length ??0) === 0){
+            setError('Select current players and bowlers');
+            return;
+        }
+        await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, player: currentBatsman!, score: scoreKey})).unwrap();
     };
 
     return (
@@ -56,13 +69,19 @@ const Innings = () => {
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
                 </div>
                 <div className="GameCard-header">
-                    <button className="CurrentPlayerButton">{currentPlayer1?.name}</button>
+                    <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
-                    <button className="CurrentPlayerButton">{currentPlayer2?.name}</button>
+                    <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
                 </div>
                 <br />
-                <ScoreKeyboard />
+                <ScoreKeyboard onClick={onClickScoreKey} />
+                {
+                    error.length > 0 &&
+                    <div className="error"> 
+                        <p> { error } </p>
+                    </div>
+                }
             </div>
         </div>
     );

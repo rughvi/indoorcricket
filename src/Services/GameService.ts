@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, addDoc, collection, setDoc } from 'firebase/firestore/lite';
+import { doc, getDoc, addDoc, collection, setDoc, updateDoc, FieldValue, arrayUnion } from 'firebase/firestore/lite';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CurrentGame } from '../Models/CurrentGame';
 import { db } from '../Firebase/firebase';
@@ -60,4 +60,10 @@ export const updateInningsCurrentBowler = createAsyncThunk('game/updateGame', as
         const gameDocRef = doc(db, 'games', input.gameId);
         await setDoc(gameDocRef, { [input.key] : input.value}, {merge: true});
     }
+});
+
+export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInningsCurrentPlayerScore', async (input: {gameId: string, player: Player, score: number}) => {
+    const gameDocRef = doc(db, 'games', input.gameId);
+    const key = input.player.name;
+    await setDoc(gameDocRef, { innings1Score: { [key] : arrayUnion(`${input.score}`)}}, {merge: true});
 });
