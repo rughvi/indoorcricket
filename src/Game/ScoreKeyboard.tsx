@@ -23,6 +23,7 @@ const ScoreKeyboard = (props: {onClick: (keyPressed: ScoreKey) => void }) => {
             <br />
             <div className="ScoreKeyboardRow">
                 <div className="ScoreKeyboardElement" onClick={() => props.onClick(ScoreKey.Wide)}>WD</div>
+                <div className="ScoreKeyboardElement" onClick={() => props.onClick(ScoreKey.Dot)}>0</div>
                 <div className="ScoreKeyboardElement" style={{ backgroundColor: "#c31212" }} onClick={() => props.onClick(ScoreKey.Wicket)}>WK</div>
             </div>
         </div>
