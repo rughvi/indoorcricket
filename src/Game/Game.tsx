@@ -76,7 +76,9 @@ const Game = () => {
                    <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</div>
                 </div>
                 <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: { currentGame.game.team1.map(p => p.name).join(", ")}
+                    Players: { currentGame.game.teamBattingFirst === Teams.One?
+                                 currentGame.game.team1.map(p => p.name).join(", "):
+                                 currentGame.game.team2.map(p => p.name).join(", ") }
                 </p>
                 <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {endFirstInnings()}}>End innings</button>
             </div>
@@ -101,7 +103,9 @@ const Game = () => {
                    <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</div>
                 </div>
                 <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: {currentGame.game.team2.map(p => p.name).join(", ")}
+                    Players: {currentGame.game.teamBattingFirst === Teams.One?
+                                 currentGame.game.team2.map(p => p.name).join(", "):
+                                 currentGame.game.team1.map(p => p.name).join(", ")}
                 </p>
             </div>
         </div>

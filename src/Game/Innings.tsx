@@ -17,6 +17,7 @@ const Innings = () => {
     const dispatch = useDispatch<IRootDispatch>();
     const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
+    const [bowlingTeam, setBowlingTeam] = useState<Teams>(Teams.One);
     const [currentPlayer1, setCurrentPlayer1] = useState<Player>();
     const [currentPlayer2, setCurrentPlayer2] = useState<Player>();
     const [currentBatsman, setCurrentBatsman] = useState<Player>();
@@ -25,6 +26,7 @@ const Innings = () => {
 
     useEffect(() => {
         setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
+        setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
         if(inningsId == "1") {
             setCurrentPlayer1(currentGame.game.innings1CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);    
@@ -37,7 +39,22 @@ const Innings = () => {
     }, [currentGame]);
 
     const choosePlayer = (playerBowler: string, currentPlayerId: number) => {
-        navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`);
+        const nonCurrentPlayer = (currentPlayerId === 1 ? currentPlayer2: currentPlayer1);
+        let playersToChooseFrom = [];
+        if(playerBowler === 'player') { //batsman
+            if(currentGame.game.teamBattingFirst == Teams.One && inningsId == "1") {
+                playersToChooseFrom = currentGame.game.team1.filter(p => p.name !== nonCurrentPlayer?.name);
+            } else {
+                playersToChooseFrom = currentGame.game.team2.filter(p => p.name !== nonCurrentPlayer?.name);
+            }
+        } else { //bowler
+            if(currentGame.game.teamBattingFirst == Teams.One && inningsId == "1") {
+                playersToChooseFrom = currentGame.game.team2;
+            } else {
+                playersToChooseFrom = currentGame.game.team1;
+            }
+        }
+        navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`, {state: {playersToChooseFrom}});
     };
 
     const onClickScoreKey = async (scoreKey: ScoreKey) => {
@@ -49,7 +66,8 @@ const Innings = () => {
         if((scoreKey === ScoreKey.Wide)) { /* This also applies to NoBall */
             await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKey})).unwrap();
         } else if(scoreKey == ScoreKey.Wicket) {
-            await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!})).unwrap();
+            await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, currentPlayerKey: (currentBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` )})).unwrap();
+            setCurrentBatsman(undefined);
         } else {
             await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
         }
@@ -62,7 +80,11 @@ const Innings = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div>Innings: 1</div>
-                   <div>Batting: T{battingTeam}</div>
+                </div>
+                <br />
+                <div className="GameCard-header">
+                    <div>Batting: T{battingTeam}</div>
+                    <div>Bowling: T{bowlingTeam}</div>
                 </div>
                 <br />
                 <div className="GameCard-header">
@@ -77,8 +99,14 @@ const Innings = () => {
                 <br/>
                 <div>display 5/7 balls</div>
                 <div className="GameCard-header">
+                    <div>Bowler:</div>
+                </div>
+                <div className="GameCard-header">
                     <button className="CurrentPlayerButton">{currentBowler?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                </div>
+                <div className="GameCard-header">
+                    <div>Batsmen:</div>
                 </div>
                 <div className="GameCard-header">
                     <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
