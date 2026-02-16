@@ -44,7 +44,7 @@ const Game = () => {
         };
 
         initialize();
-    }, [dispatch]);
+    }, [currentGame]);
 
     const endFirstInnings = async () => {
         await dispatch(endInnings({gameId: currentGame.gameId, inningsId: "1"})).unwrap();
@@ -58,7 +58,7 @@ const Game = () => {
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
-                    <button className="Button" onClick={() => {navigate('/innings/1')}}>{innings1Action}</button>
+                    <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {navigate('/innings/1')}}>{innings1Action}</button>
                 </div>
                 <div className="GameCard-header">
                    <div>Runs: {0}</div>
