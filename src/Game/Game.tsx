@@ -61,15 +61,15 @@ const Game = () => {
                     <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {navigate('/innings/1')}}>{innings1Action}</button>
                 </div>
                 <div className="GameCard-header">
-                   <div>Runs: {0}</div>
+                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Wickets: {0}</div>
+                   <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Overs: {0.0}</div>
+                   <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
                 </div>
                 <br />
                 <div className="GameCard-header">
@@ -88,15 +88,15 @@ const Game = () => {
                     <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {navigate('/innings/2')}}>{innings2Action}</button>
                 </div>
                 <div className="GameCard-header">
-                   <div>Runs: {0}</div>
+                   <div>Runs: {currentGame.game.innings2TotalRuns ?? 0}</div>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Wickets: {0}</div>
+                   <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Overs: {0.0}</div>
+                   <div>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
                 </div>
                 <br />
                 <div className="GameCard-header">
