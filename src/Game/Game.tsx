@@ -46,8 +46,8 @@ const Game = () => {
         initialize();
     }, [currentGame]);
 
-    const endFirstInnings = async () => {
-        await dispatch(endInnings({gameId: currentGame.gameId, inningsId: "1"})).unwrap();
+    const endInningsFn = async (id: string) => {
+        await dispatch(endInnings({gameId: currentGame.gameId, inningsId: id})).unwrap();
         await dispatch(fetchCurrentGame()).unwrap();
     };
 
@@ -80,12 +80,12 @@ const Game = () => {
                                  currentGame.game.team1.map(p => p.name).join(", "):
                                  currentGame.game.team2.map(p => p.name).join(", ") }
                 </p>
-                <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {endFirstInnings()}}>End innings</button>
+                <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {endInningsFn("1")}}>End innings</button>
             </div>
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
-                    <button className="Button" disabled={innings1Action !== 'Finished'} onClick={() => {navigate('/innings/2')}}>{innings2Action}</button>
+                    <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {navigate('/innings/2')}}>{innings2Action}</button>
                 </div>
                 <div className="GameCard-header">
                    <div>Runs: {0}</div>
@@ -107,6 +107,7 @@ const Game = () => {
                                  currentGame.game.team2.map(p => p.name).join(", "):
                                  currentGame.game.team1.map(p => p.name).join(", ")}
                 </p>
+                <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {endInningsFn("2")}}>End innings</button>
             </div>
         </div>
     );
