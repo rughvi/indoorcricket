@@ -28,10 +28,14 @@ const Innings = () => {
         setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
         setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
         if(inningsId == "1") {
+            setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
+            setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
             setCurrentPlayer1(currentGame.game.innings1CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);
             setCurrentBowler(currentGame.game.innings1CurrentBowler);    
         } else {
+            setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
+            setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
             setCurrentPlayer1(currentGame.game.innings2CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings2CurrentPlayer2);
             setCurrentBowler(currentGame.game.innings2CurrentBowler);
@@ -42,16 +46,16 @@ const Innings = () => {
         const nonCurrentPlayer = (currentPlayerId === 1 ? currentPlayer2: currentPlayer1);
         let playersToChooseFrom = [];
         if(playerBowler === 'player') { //batsman
-            if(currentGame.game.teamBattingFirst == Teams.One && inningsId == "1") {
-                playersToChooseFrom = currentGame.game.team1.filter(p => p.name !== nonCurrentPlayer?.name);
+            if(battingTeam === Teams.One) {
+                playersToChooseFrom = currentGame.game.team1;
             } else {
-                playersToChooseFrom = currentGame.game.team2.filter(p => p.name !== nonCurrentPlayer?.name);
+                playersToChooseFrom = currentGame.game.team2;
             }
         } else { //bowler
-            if(currentGame.game.teamBattingFirst == Teams.One && inningsId == "1") {
-                playersToChooseFrom = currentGame.game.team2;
-            } else {
+            if(bowlingTeam === Teams.One) {
                 playersToChooseFrom = currentGame.game.team1;
+            } else {
+                playersToChooseFrom = currentGame.game.team2;
             }
         }
         navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`, {state: {playersToChooseFrom}});
@@ -79,7 +83,7 @@ const Innings = () => {
         <div className="Form">
             <div className="GameCard">
                 <div className="GameCard-header">
-                    <div>Innings: 1</div>
+                    <div>Innings: {inningsId}</div>
                 </div>
                 <br />
                 <div className="GameCard-header">

@@ -9,7 +9,7 @@ import { Player } from "../Models/Player";
 import { Teams } from "../Models/Teams";
 import { CurrentGame } from "../Models/CurrentGame";
 import { InningsStatus } from "../Models/InningsStatus";
-import { endInnings, fetchCurrentGame } from "../Services/GameService";
+import { endCurrentGame, endInnings, fetchCurrentGame } from "../Services/GameService";
 const Game = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch<IRootDispatch>();
@@ -48,6 +48,9 @@ const Game = () => {
 
     const endInningsFn = async (id: string) => {
         await dispatch(endInnings({gameId: currentGame.gameId, inningsId: id})).unwrap();
+        if(id === "2") {
+            await dispatch(endCurrentGame());
+        }
         await dispatch(fetchCurrentGame()).unwrap();
     };
 

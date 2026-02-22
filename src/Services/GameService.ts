@@ -1,4 +1,4 @@
-import { doc, getDoc, addDoc, collection, setDoc, updateDoc, FieldValue, arrayUnion, runTransaction } from 'firebase/firestore/lite';
+import { doc, getDoc, addDoc, collection, setDoc, arrayUnion, runTransaction, deleteDoc } from 'firebase/firestore/lite';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { CurrentGame } from '../Models/CurrentGame';
 import { db } from '../Firebase/firebase';
@@ -59,6 +59,11 @@ export const createNewGame = createAsyncThunk('game/createNewGame', async (game:
     return gameDocRef.id;
 });
 
+export const endCurrentGame = createAsyncThunk('game/endGame', async() => {
+    const currentGameDocRef = doc(db, 'currentGame', 'details');
+    await deleteDoc(currentGameDocRef);
+});
+
 export const endInnings = createAsyncThunk('game/endInnings', async (input: {gameId: string, inningsId: string}) => {
     if(input.gameId && input.inningsId) {
         const key = `innings${input.inningsId}Status`;
@@ -100,7 +105,7 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         if(inningsPlayerScore) {
             await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: arrayUnion(`${input.score}`)}}, {merge: true});
         } else {
-            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [input.score]}}, {merge: true});
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [`${input.score}`]}}, {merge: true});
         }
 
 
