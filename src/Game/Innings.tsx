@@ -29,13 +29,13 @@ const Innings = () => {
         setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
         if(inningsId == "1") {
             setCurrentPlayer1(currentGame.game.innings1CurrentPlayer1);
-            setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);    
+            setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);
+            setCurrentBowler(currentGame.game.innings1CurrentBowler);    
         } else {
             setCurrentPlayer1(currentGame.game.innings2CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings2CurrentPlayer2);
+            setCurrentBowler(currentGame.game.innings2CurrentBowler);
         }
-
-        setCurrentBowler(currentGame.game.inningsCurrentBowler);
     }, [currentGame]);
 
     const choosePlayer = (playerBowler: string, currentPlayerId: number) => {
@@ -87,16 +87,34 @@ const Innings = () => {
                     <div>Bowling: T{bowlingTeam}</div>
                 </div>
                 <br />
-                <div className="GameCard-header">
-                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
-                   <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
-                </div>
-                <br/>
-                <div className="GameCard-header">
-                   <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
-                   <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
-                </div>
-                <br/>
+                {(inningsId === "1") ? 
+                    <>
+                        <div className="GameCard-header">
+                            <div>Runs: {currentGame.game[`innings1TotalRuns`] ?? 0}</div>
+                            <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
+                        </div>
+                        <br/>
+                        <div className="GameCard-header">
+                            <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
+                            <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
+                        </div>
+                        <br/>
+                    </>
+                    : 
+                    <>
+                        <div className="GameCard-header">
+                            <div>Runs: {currentGame.game[`innings2TotalRuns`] ?? 0}</div>
+                            <div>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
+                        </div>
+                        <br/>
+                        <div className="GameCard-header">
+                            <div>Extras: {currentGame.game.innings2Extras ?? 0}</div>
+                            <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
+                        </div>
+                        <br/>
+                    </>
+                }
+                
                 <div>display 5/7 balls</div>
                 <div className="GameCard-header">
                     <div>Bowler:</div>

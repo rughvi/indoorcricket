@@ -22,8 +22,9 @@ const CurrentPlayerSelection = () => {
             await dispatch(updateInningsCurrentPlayer({gameId: currentGame.gameId, key: inningsCurrentPlayer, value: player })).unwrap();
             await dispatch(gameSlice.actions.updateInningsCurrentPlayer({key: inningsCurrentPlayer, value: player}));
         } else {
-            await dispatch(updateInningsCurrentBowler({gameId: currentGame.gameId, key: 'inningsCurrentBowler', value: player })).unwrap();
-            await dispatch(gameSlice.actions.updateInningsCurrentBowler({key: 'inningsCurrentBowler', value: player}));
+            const inningsCurrentBowler: string = `innings${inningsId}CurrentBowler`;
+            await dispatch(updateInningsCurrentBowler({gameId: currentGame.gameId, key: inningsCurrentBowler, value: player })).unwrap();
+            await dispatch(gameSlice.actions.updateInningsCurrentBowler({key: inningsCurrentBowler, value: player}));
         }
         navigate(`/innings/${inningsId}`);
     };
