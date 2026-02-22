@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore/lite";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore/lite";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -9,5 +9,9 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
+
+if(process.env.REACT_APP_USE_EMULATOR === 'true') {
+    connectFirestoreEmulator(db, '127.0.0.1', 8080);
+}
 
 export default firebaseApp;
