@@ -19,7 +19,9 @@ const Innings = () => {
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
     const [bowlingTeam, setBowlingTeam] = useState<Teams>(Teams.One);
     const [currentPlayer1, setCurrentPlayer1] = useState<Player>();
+    const [currentPlayer1Scores, setCurrentPlayer1Scores] = useState<number[]>();
     const [currentPlayer2, setCurrentPlayer2] = useState<Player>();
+    const [currentPlayer2Scores, setCurrentPlayer2Scores] = useState<number[]>();
     const [currentBatsman, setCurrentBatsman] = useState<Player>();
     const [currentBowler, setCurrentBowler] = useState<Player>();
     const [error, setError] = useState<string>('');
@@ -32,6 +34,10 @@ const Innings = () => {
             setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
             setCurrentPlayer1(currentGame.game.innings1CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings1CurrentPlayer2);
+            if(currentGame.game.innings1PlayersScore) {
+                setCurrentPlayer1Scores(currentGame.game.innings1PlayersScore[(`${currentPlayer1?.name}`) as keyof typeof currentGame.game.innings1PlayersScore]);
+                setCurrentPlayer2Scores(currentGame.game.innings1PlayersScore[(`${currentPlayer2?.name}`) as keyof typeof currentGame.game.innings1PlayersScore]);
+            }
             setCurrentBowler(currentGame.game.innings1CurrentBowler);    
         } else {
             setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
@@ -123,18 +129,23 @@ const Innings = () => {
                 <div className="GameCard-header">
                     <div>Bowler:</div>
                 </div>
-                <div className="GameCard-header">
+                <div className="GameCard-row">
                     <button className="CurrentPlayerButton">{currentBowler?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                    <p></p>
                 </div>
                 <div className="GameCard-header">
                     <div>Batsmen:</div>
                 </div>
-                <div className="GameCard-header">
+                <div className="GameCard-row">
                     <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                    <p>{currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0}</p>
+                </div>
+                <div className="GameCard-row">
                     <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}</button>
                     <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
+                    <p>{currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0}</p>
                 </div>
                 <br />
                 <ScoreKeyboard onClick={onClickScoreKey} />

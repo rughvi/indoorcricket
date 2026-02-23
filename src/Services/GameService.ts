@@ -103,9 +103,9 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
         const inningsPlayerScore = inningsScore[input.player.name];
         
         if(inningsPlayerScore) {
-            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: arrayUnion(`${input.score}`)}}, {merge: true});
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: arrayUnion(input.score)}}, {merge: true});
         } else {
-            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [`${input.score}`]}}, {merge: true});
+            await transaction.set(gameDocRef, {[inningsScoreKey]: { [`${input.player.name}`]: [input.score]}}, {merge: true});
         }
 
 
