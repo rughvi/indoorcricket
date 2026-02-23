@@ -74,8 +74,12 @@ const Innings = () => {
             setError('Select current players and bowlers');
             return;
         }
-        if((scoreKeyEventType.type === ScoreKey.Wide)) { /* This also applies to NoBall */
+        if((scoreKeyEventType.type === ScoreKey.Wide) || (scoreKeyEventType.type === ScoreKey.NoBall)) { /* This also applies to NoBall */
             await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKeyEventType.value})).unwrap();
+        } else if ((scoreKeyEventType.type === ScoreKey.NoBallPlusOne) || (scoreKeyEventType.type === ScoreKey.NoBallPlusTwo) || (scoreKeyEventType.type === ScoreKey.NoBallPlusThree)
+                    || (scoreKeyEventType.type === ScoreKey.NoBallPlusFour) || (scoreKeyEventType.type === ScoreKey.NoBallPlusFive) || (scoreKeyEventType.type === ScoreKey.NoBallPlusSix)) {
+            await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: 3})).unwrap();
+            await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: (scoreKeyEventType.value - 3)})).unwrap();
         } else if(scoreKeyEventType.type == ScoreKey.Wicket) {
             await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, currentPlayerKey: (currentBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` )})).unwrap();
             setCurrentBatsman(undefined);
