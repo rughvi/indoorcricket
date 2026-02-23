@@ -44,7 +44,7 @@ const Game = () => {
         };
 
         initialize();
-    }, [currentGame]);
+    }, []);
 
     const endInningsFn = async (id: string) => {
         await dispatch(endInnings({gameId: currentGame.gameId, inningsId: id})).unwrap();
