@@ -10,6 +10,7 @@ import { Player } from "../Models/Player";
 import '../Form.css';
 import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
+import { ScoreKeyEventType } from "../Models/ScoreKeyEvent";
 
 const Innings = () => {
     const { inningsId } = useParams();
@@ -67,19 +68,19 @@ const Innings = () => {
         navigate(`/current/${playerBowler}/selection/${inningsId}/${currentPlayerId}`, {state: {playersToChooseFrom}});
     };
 
-    const onClickScoreKey = async (scoreKey: ScoreKey) => {
+    const onClickScoreKey = async (scoreKeyEventType: ScoreKeyEventType) => {
         setError('');
         if((currentBowler?.name?.length ??0) === 0 || (currentBatsman?.name?.length ??0) === 0){
             setError('Select current players and bowlers');
             return;
         }
-        if((scoreKey === ScoreKey.Wide)) { /* This also applies to NoBall */
-            await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKey})).unwrap();
-        } else if(scoreKey == ScoreKey.Wicket) {
+        if((scoreKeyEventType.type === ScoreKey.Wide)) { /* This also applies to NoBall */
+            await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKeyEventType.value})).unwrap();
+        } else if(scoreKeyEventType.type == ScoreKey.Wicket) {
             await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, currentPlayerKey: (currentBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` )})).unwrap();
             setCurrentBatsman(undefined);
         } else {
-            await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKey})).unwrap();
+            await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKeyEventType.value})).unwrap();
         }
         
         await dispatch(fetchCurrentGame()).unwrap();
