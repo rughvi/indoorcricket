@@ -19,7 +19,7 @@ const Game = () => {
 
     useEffect(() => {
         const initialize = async () => {
-            await dispatch(fetchCurrentGame());
+            await dispatch(fetchCurrentGame(currentGame.gameId));
             switch(currentGame.game.innings1Status) {
                 case InningsStatus.InProgress:
                     setInnings1Action('Resume');
@@ -51,7 +51,7 @@ const Game = () => {
         if(id === "2") {
             await dispatch(endCurrentGame());
         }
-        await dispatch(fetchCurrentGame()).unwrap();
+        await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
     };
 
 

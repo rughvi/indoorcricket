@@ -25,7 +25,7 @@ const Main = () => {
     
     useEffect(() => {
         if(user) {
-            dispatch(fetchCurrentGame());
+            dispatch(fetchCurrentGame(''));
 
         } else {
             console.log('user not present');

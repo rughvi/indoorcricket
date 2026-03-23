@@ -11,13 +11,24 @@ const currentGameCollection = 'currentGame';
 const gamesCollection = 'games';
 const currentGameDocument = 'details';
 
-export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame', async () => {
-    const currentGameDoc = doc(db, currentGameCollection, currentGameDocument);
-    const currentGameSnapshot = await getDoc(currentGameDoc);
+export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame', async (gameId: string) => {
     const game: Game = { team1: [], team2: [], teamBattingFirst: Teams.One, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted};
     let currentGame: CurrentGame = { gameId: '', game };
-    if(currentGameSnapshot.exists()) {
-        currentGame.gameId = currentGameSnapshot.data().gameId;
+    if(gameId.length > 0) {
+        currentGame.gameId = gameId;
+    } else {
+        const currentGameDoc = doc(db, currentGameCollection, currentGameDocument);
+        const currentGameSnapshot = await getDoc(currentGameDoc);
+        if(currentGameSnapshot.exists()) {
+            currentGame.gameId = currentGameSnapshot.data().gameId;
+        } else {
+            return currentGame;
+        }
+    }
+    
+    
+    // if(currentGameSnapshot.exists()) {
+        // currentGame.gameId = currentGameSnapshot.data().gameId;
 
         const gameDoc = doc(db, gamesCollection, currentGame.gameId);
         const gameSnapshot = await getDoc(gameDoc);
@@ -46,7 +57,7 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings2Wickets: gameSnapshot.data().innings2Wickets,
             };
         }        
-    }
+    // }
     return currentGame;
 });
 

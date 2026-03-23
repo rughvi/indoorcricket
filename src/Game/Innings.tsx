@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ReactComponent as Edit} from '../edit.svg';
+import { ReactComponent as Edit } from '../edit.svg';
+import { ReactComponent as Next } from '../next.svg';
 import ScoreKeyboard from "./ScoreKeyboard";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootDispatch, IRootState } from "../store/store";
@@ -87,7 +88,11 @@ const Innings = () => {
             await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKeyEventType.value})).unwrap();
         }
         
-        await dispatch(fetchCurrentGame()).unwrap();
+        await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
+    };
+
+    const nextOver = async () => {
+
     };
 
     return (
@@ -106,11 +111,13 @@ const Innings = () => {
                     <>
                         <div className="GameCard-header">
                             <div>Runs: {currentGame.game[`innings1TotalRuns`] ?? 0}</div>
-                            <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
+                            <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
                         </div>
                         <br/>
                         <div className="GameCard-header">
-                            <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}
+                                <Next style={{height: "40px", width: "40px"}} onClick={() => {nextOver()}}/>
+                            </div>
                             <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
                         </div>
                         <br/>
@@ -135,21 +142,26 @@ const Innings = () => {
                     <div>Bowler:</div>
                 </div>
                 <div className="GameCard-row">
-                    <button className="CurrentPlayerButton">{currentBowler?.name}</button>
-                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
-                    <p></p>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <button className="CurrentPlayerButton">{currentBowler?.name}</button>
+                        <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                    </div>
                 </div>
                 <div className="GameCard-header">
                     <div>Batsmen:</div>
                 </div>
                 <div className="GameCard-row">
-                    <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
-                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
+                        <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                    </div>
                     <p>{currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0}</p>
                 </div>
                 <div className="GameCard-row">
-                    <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}</button>
-                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                        <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}</button>
+                        <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
+                    </div>
                     <p>{currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0}</p>
                 </div>
                 <br />
