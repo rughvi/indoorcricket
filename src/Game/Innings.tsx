@@ -28,7 +28,7 @@ const Innings = () => {
     const [currentBowler, setCurrentBowler] = useState<Player>();
     const [error, setError] = useState<string>('');
 
-    useEffect(() => {
+    const initialize = () => {
         setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
         setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
         if(inningsId == "1") {
@@ -46,9 +46,16 @@ const Innings = () => {
             setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
             setCurrentPlayer1(currentGame.game.innings2CurrentPlayer1);
             setCurrentPlayer2(currentGame.game.innings2CurrentPlayer2);
+            if(currentGame.game.innings2PlayersScore) {
+                setCurrentPlayer1Scores(currentGame.game.innings2PlayersScore[(`${currentGame.game.innings2CurrentPlayer1?.name}`) as keyof typeof currentGame.game.innings2PlayersScore]);
+                setCurrentPlayer2Scores(currentGame.game.innings2PlayersScore[(`${currentGame.game.innings2CurrentPlayer2?.name}`) as keyof typeof currentGame.game.innings2PlayersScore]);
+            }
             setCurrentBowler(currentGame.game.innings2CurrentBowler);
         }
-    }, []);
+    };
+    useEffect(() => {
+        initialize();
+    }, [currentGame]);
 
     const choosePlayer = (playerBowler: string, currentPlayerId: number) => {
         const nonCurrentPlayer = (currentPlayerId === 1 ? currentPlayer2: currentPlayer1);
@@ -124,11 +131,13 @@ const Innings = () => {
                     <>
                         <div className="GameCard-header">
                             <div>Runs: {currentGame.game[`innings2TotalRuns`] ?? 0}</div>
-                            <div>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
+                            <div>Extras: {currentGame.game.innings2Extras ?? 0}</div>
                         </div>
                         <br/>
                         <div className="GameCard-header">
-                            <div>Extras: {currentGame.game.innings2Extras ?? 0}</div>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}
+                                <Next style={{height: "40px", width: "40px"}} onClick={() => {nextOver()}}/>
+                            </div>
                             <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
                         </div>
                         <br/>

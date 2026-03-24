@@ -17,8 +17,7 @@ const Game = () => {
     const [innings1Action, setInnings1Action] = useState<string>('Start');
     const [innings2Action, setInnings2Action] = useState<string>('Start');
 
-    useEffect(() => {
-        const initialize = async () => {
+    const initialize = async () => {
             await dispatch(fetchCurrentGame(currentGame.gameId));
             switch(currentGame.game.innings1Status) {
                 case InningsStatus.InProgress:
@@ -41,8 +40,9 @@ const Game = () => {
                 default:
                     break;            
             };
-        };
+    };
 
+    useEffect(() => {
         initialize();
     }, []);
 
@@ -51,7 +51,7 @@ const Game = () => {
         if(id === "2") {
             await dispatch(endCurrentGame());
         }
-        await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
+        await initialize();
     };
 
 
