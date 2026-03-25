@@ -12,6 +12,7 @@ import '../Form.css';
 import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras, updateInningsBowling } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
 import { ScoreKeyEventType } from "../Models/ScoreKeyEvent";
+import { BowlingOver } from "../Models/BowlingOver";
 
 const Innings = () => {
     const { inningsId } = useParams();
@@ -95,9 +96,9 @@ const Innings = () => {
         const input = {
             gameId: currentGame.gameId, 
             inningsId: inningsId!, 
-            over: Math.floor((inningsId == "1"? (currentGame.game?.innings1TotalBalls??0) : (currentGame.game?.innings2TotalBalls??0)) / 6), 
+            over: currentOver(), 
             bowler: currentBowler?.name!, 
-            scoreWicket: scoreKeyEventType.value.toString()
+            scoreWicket: scoreKeyEventType.label
         };
         await dispatch(updateInningsBowling(input))
         await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
@@ -105,6 +106,25 @@ const Innings = () => {
 
     const nextOver = async () => {
 
+    };
+    const currentOver = () => {
+        return Math.floor((inningsId == "1"? (currentGame.game?.innings1TotalBalls??0) : (currentGame.game?.innings2TotalBalls??0)) / 6);
+    };
+
+    const statsByBall = () => {
+        var allBowling: {[key: string]: BowlingOver; } = {};
+        if(inningsId == "1") {
+            allBowling = currentGame.game.innings1Bowling??{};
+            
+        } else {
+            allBowling = currentGame.game.innings2Bowling??{};
+        }
+        var runs: string[] = [];
+        const over = currentOver();
+        for(let i=over; i>= 0; i--) {
+            runs = runs.concat([`Ø${i} ${allBowling[i]?.name??''} :`], allBowling[i]?.runs??[], ["||"]);
+        }
+        return runs.join(" ");
     };
 
     return (
@@ -151,7 +171,7 @@ const Innings = () => {
                     </>
                 }
                 
-                <div>display 5/7 balls</div>
+                <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "100%", paddingTop: 10, paddingBottom: 10,  whiteSpace: "nowrap"}}>{statsByBall()}</div>
                 <div className="GameCard-header">
                     <div>Bowler:</div>
                 </div>
