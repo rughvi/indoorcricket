@@ -102,6 +102,9 @@ const Innings = () => {
         };
         await dispatch(updateInningsBowling(input))
         await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
+        if((inningsId == "1" && (currentGame.game.innings1TotalBalls! %6 == 5)) || (inningsId == "2" && (currentGame.game.innings2TotalBalls! %6 == 5))) {
+            setCurrentBowler(undefined);   
+        }
     };
 
     const nextOver = async () => {
@@ -122,7 +125,7 @@ const Innings = () => {
         var runs: string[] = [];
         const over = currentOver();
         for(let i=over; i>= 0; i--) {
-            runs = runs.concat([`Ø${i} ${allBowling[i]?.name??''} :`], allBowling[i]?.runs??[], ["||"]);
+            runs = runs.concat([`${i} ${allBowling[i]?.name??''} :`], allBowling[i]?.runs??[], ["|"]);
         }
         return runs.join(" ");
     };
