@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IRootDispatch, IRootState } from "../store/store";
@@ -10,6 +10,7 @@ import { gameSlice } from "../store/slices/gameSlice";
 const CurrentPlayerSelection = () => {
     const { playerbowler, inningsId, currentPlayerId } = useParams();
     const location = useLocation();
+    const [playerBowler, setPlayerBowler] = useState<string>('');
     const currentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     let teamPlayers: Player[] = location.state.playersToChooseFrom ?? [];
     
@@ -33,13 +34,17 @@ const CurrentPlayerSelection = () => {
         <div className="App">
             <header className="App-header">
                 <p>Select {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</p>
-                    <ul className="TeamSelectionUL">
-                        {teamPlayers.map((player, index) => (
-                            <li key={index}>
-                                <button className="Button" onClick={() => { onPlayerSelectionDone(player) }}> {player.name} </button>
-                            </li>
-                        ))}
-                    </ul>
+                <ul className="TeamSelectionUL">
+                    {teamPlayers.map((player, index) => (
+                        <li key={index}>
+                            <button className="Button" onClick={() => { onPlayerSelectionDone(player) }}> {player.name} </button>
+                        </li>
+                    ))}
+                </ul>
+                <div className="line"></div>
+                <br/>
+                <input style={{height: '30px', width: '50%',fontSize: '18px' }} value={playerBowler} onChange={(event) => {setPlayerBowler(event.target.value)}}/>
+                <button className="Button" onClick={() => { onPlayerSelectionDone({name: playerBowler}) }}>Add {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</button>
             </header>
         </div>
     );
