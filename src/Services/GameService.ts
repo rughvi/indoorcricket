@@ -77,6 +77,14 @@ export const endCurrentGame = createAsyncThunk('game/endGame', async() => {
     await deleteDoc(currentGameDocRef);
 });
 
+export const startInnings = createAsyncThunk('game/startInnings', async (input: {gameId: string, inningsId: string}) => {
+    if(input.gameId && input.inningsId) {
+        const key = `innings${input.inningsId}Status`;
+        const gameDocRef = doc(db, 'games', input.gameId);
+        await setDoc(gameDocRef, { [key] : 'In progress'}, {merge: true});
+    }
+});
+
 export const endInnings = createAsyncThunk('game/endInnings', async (input: {gameId: string, inningsId: string}) => {
     if(input.gameId && input.inningsId) {
         const key = `innings${input.inningsId}Status`;

@@ -9,7 +9,7 @@ import { setTeamBattingFirst } from "../store/slices/gameSlice";
 import { IRootDispatch, IRootState } from "../store/store";
 import { Teams } from "../Models/Teams";
 import { fetchAllPlayers } from "../Services/PlayerService";
-import { createNewGame } from "../Services/GameService";
+import { createNewGame, fetchCurrentGame } from "../Services/GameService";
 import { Game } from '../Models/Game';
 import { InningsStatus } from "../Models/InningsStatus";
 
@@ -20,10 +20,10 @@ const GameSelection = () => {
     const team2Players = useSelector<IRootState, Player[]>(state => state.game.currentGame.game.team2);
     const teamBattingFirst = useSelector<IRootState, Teams>(state => state.game.currentGame.game.teamBattingFirst);
     const [ error, setError ] = useState<string>('');
-
+    
     useEffect(() => {
         dispatch(fetchAllPlayers());
-    }, [dispatch]);
+    }, []);
 
     const startGame = async () => {
         if(team1Players.length === 0 || team2Players.length === 0) {
@@ -33,6 +33,7 @@ const GameSelection = () => {
 
         const game: Game = {team1: team1Players, team2: team2Players, teamBattingFirst, innings1Status: InningsStatus.NotStarted, innings2Status: InningsStatus.NotStarted, innings1PlayersScore: {}, innings2PlayersScore: {}, innings1Bowling:{}, innings2Bowling:{}, innings1TotalRuns: 0, innings2TotalRuns: 0, innings1TotalBalls: 0, innings2TotalBalls: 0, innings1Extras: 0, innings2Extras: 0, innings1Wickets: 0, innings2Wickets: 0};
         await dispatch(createNewGame(game)).unwrap();
+        await dispatch(fetchCurrentGame('')).unwrap();
         navigate('/game');
     };
 
