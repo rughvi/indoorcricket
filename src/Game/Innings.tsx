@@ -180,6 +180,7 @@ const Innings = () => {
                     </div>
                 }
             </div>
+            <button className="Button" onClick={() => {navigate('/game')}}>Back</button>
         </div>
     );
 };
