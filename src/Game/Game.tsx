@@ -72,11 +72,9 @@ const Game = () => {
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
                     <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {startResumeInnings("1")}}>{innings1Action}</button>
                 </div>
-                <div className="GameCard-header">
-                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
-                </div>
                 <br/>
                 <div className="GameCard-header">
+                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
                    <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
                 </div>
                 <br/>
@@ -99,11 +97,9 @@ const Game = () => {
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
                     <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {startResumeInnings("2")}}>{innings2Action}</button>
                 </div>
-                <div className="GameCard-header">
-                   <div>Runs: {currentGame.game.innings2TotalRuns ?? 0}</div>
-                </div>
                 <br/>
                 <div className="GameCard-header">
+                   <div>Runs: {currentGame.game.innings2TotalRuns ?? 0}</div>
                    <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
                 </div>
                 <br/>

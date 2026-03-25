@@ -174,7 +174,8 @@ const Innings = () => {
                     </>
                 }
                 
-                <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "100%", paddingTop: 10, paddingBottom: 10,  whiteSpace: "nowrap"}}>{statsByBall()}</div>
+                <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "100%",  whiteSpace: "nowrap"}}>{statsByBall()}</div>
+                <br/>
                 <div className="GameCard-header">
                     <div>Bowler:</div>
                 </div>
@@ -188,18 +189,10 @@ const Innings = () => {
                     <div>Batsmen:</div>
                 </div>
                 <div className="GameCard-row">
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}</button>
-                        <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
-                    </div>
-                    <p>{currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0}</p>
-                </div>
-                <div className="GameCard-row">
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                        <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}</button>
-                        <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
-                    </div>
-                    <p>{currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0}</p>
+                    <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}({currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0})</button>
+                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                    <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}({currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0})</button>
+                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
                 </div>
                 <br />
                 <ScoreKeyboard onClick={onClickScoreKey} />
