@@ -1,3 +1,4 @@
+import { BowlingOver } from "./BowlingOver";
 import { InningsStatus } from "./InningsStatus";
 import { Player } from "./Player";
 import { Teams } from "./Teams";
@@ -15,6 +16,8 @@ export interface Game {
     innings2CurrentPlayer1?: Player;
     innings2CurrentPlayer2?: Player;
     innings1PlayersScore?: {};
+    innings1Bowling?: {};
+    innings2Bowling?: {};
     innings2PlayersScore?: {};
     innings1TotalRuns?: number;
     innings2TotalRuns?: number;

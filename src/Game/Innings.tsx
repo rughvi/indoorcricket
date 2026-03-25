@@ -9,7 +9,7 @@ import { CurrentGame } from "../Models/CurrentGame";
 import { Teams } from "../Models/Teams";
 import { Player } from "../Models/Player";
 import '../Form.css';
-import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras } from "../Services/GameService";
+import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras, updateInningsBowling } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
 import { ScoreKeyEventType } from "../Models/ScoreKeyEvent";
 
@@ -92,7 +92,14 @@ const Innings = () => {
         } else {
             await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKeyEventType.value})).unwrap();
         }
-        
+        const input = {
+            gameId: currentGame.gameId, 
+            inningsId: inningsId!, 
+            over: Math.floor((inningsId == "1"? (currentGame.game?.innings1TotalBalls??0) : (currentGame.game?.innings2TotalBalls??0)) / 6), 
+            bowler: currentBowler?.name!, 
+            scoreWicket: scoreKeyEventType.value.toString()
+        };
+        await dispatch(updateInningsBowling(input))
         await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
     };
 

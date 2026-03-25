@@ -47,6 +47,8 @@ export const fetchCurrentGame = createAsyncThunk('currentGame/fetchCurrentGame',
                 innings2CurrentPlayer2: gameSnapshot.data().innings2CurrentPlayer2,
                 innings1PlayersScore: gameSnapshot.data().innings1PlayersScore,
                 innings2PlayersScore: gameSnapshot.data().innings2PlayersScore,
+                innings1Bowling: gameSnapshot.data().innings1Bowling,
+                innings2Bowling: gameSnapshot.data().innings2Bowling,
                 innings1TotalRuns: gameSnapshot.data().innings1TotalRuns,
                 innings2TotalRuns: gameSnapshot.data().innings2TotalRuns,
                 innings1TotalBalls: gameSnapshot.data().innings1TotalBalls,
@@ -162,5 +164,34 @@ export const updateInningsExtras = createAsyncThunk('game/updateInningsExtras', 
         await transaction.set(gameDocRef, {[inningsExtrasKey]: (gameData[inningsExtrasKey] + input.score) }, {merge: true})
         await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
         await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
+    });
+});
+
+export const updateInningsBowling = createAsyncThunk('game/updateInningsBowling', async (input: {gameId: string, inningsId: string, over: number, bowler: string, scoreWicket: string}) => {
+    await runTransaction(db, async (transaction) => {
+        const gameDocRef = doc(db, 'games', input.gameId);
+        const gameDoc = await transaction.get(gameDocRef);
+        if (!gameDoc.exists()) {
+            throw "Document does not exist!";
+        }
+
+        const inningsBowlingKey = (input.inningsId == "1"? 'innings1Bowling': 'innings2Bowling');
+        // const inningsTotalRunsKey = `innings${input.inningsId}TotalRuns`;
+        // const inningsTotalBallsKey = `innings${input.inningsId}TotalBalls`;
+        
+        const gameData = gameDoc.data();        
+        const inningsBowling = gameData[inningsBowlingKey];
+        const inningsBowlingOver: {name: string, runs: string[]} = inningsBowling[input.over];
+        
+        if(inningsBowlingOver) {
+            inningsBowlingOver.runs.push(input.scoreWicket);
+            await transaction.set(gameDocRef, {[inningsBowlingKey]: { [`${input.over}`]: inningsBowlingOver}}, {merge: true});
+        } else {
+            await transaction.set(gameDocRef, {[inningsBowlingKey]: { [`${input.over}`]: {name: input.bowler, runs: [`${input.scoreWicket}`]}}}, {merge: true});
+        }
+
+
+        // await transaction.set(gameDocRef, {[inningsTotalRunsKey]: (gameData[inningsTotalRunsKey] + input.score) }, {merge: true})
+        // await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
     });
 });
