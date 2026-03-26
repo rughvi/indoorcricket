@@ -139,36 +139,25 @@ const Innings = () => {
                 <br />
                 <div className="GameCard-header">
                     <div>Batting: T{battingTeam}</div>
+                    <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings1TotalRuns`] ?? 0}/{currentGame.game.innings1Wickets ?? 0}</div>
                     <div>Bowling: T{bowlingTeam}</div>
                 </div>
                 <br />
                 {(inningsId === "1") ? 
                     <>
                         <div className="GameCard-header">
-                            <div>Runs: {currentGame.game[`innings1TotalRuns`] ?? 0}</div>
-                            <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
-                        </div>
-                        <br/>
-                        <div className="GameCard-header">
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}
-                                <Next style={{height: "40px", width: "40px"}} onClick={() => {nextOver()}}/>
                             </div>
-                            <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
+                            <div>Extras: {currentGame.game.innings1Extras ?? 0}</div>
                         </div>
                         <br/>
                     </>
                     : 
                     <>
                         <div className="GameCard-header">
-                            <div>Runs: {currentGame.game[`innings2TotalRuns`] ?? 0}</div>
-                            <div>Extras: {currentGame.game.innings2Extras ?? 0}</div>
-                        </div>
-                        <br/>
-                        <div className="GameCard-header">
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}
-                                <Next style={{height: "40px", width: "40px"}} onClick={() => {nextOver()}}/>
                             </div>
-                            <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
+                            <div>Extras: {currentGame.game.innings2Extras ?? 0}</div>
                         </div>
                         <br/>
                     </>
