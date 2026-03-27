@@ -12,6 +12,7 @@ import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrent
 import { ScoreKey } from "../Models/ScoreKey";
 import { ScoreKeyEventType } from "../Models/ScoreKeyEvent";
 import { BowlingOver } from "../Models/BowlingOver";
+import { BowlerStats } from "../Models/BowlerStats";
 
 const Innings = () => {
     const { inningsId } = useParams();
@@ -26,6 +27,7 @@ const Innings = () => {
     const [currentPlayer2Scores, setCurrentPlayer2Scores] = useState<number[]>();
     const [currentBatsman, setCurrentBatsman] = useState<Player>();
     const [currentBowler, setCurrentBowler] = useState<Player>();
+    const [currentBowlerStats, setCurrentBowlerStats] = useState<BowlerStats>();
     const [error, setError] = useState<string>('');
 
     const initialize = () => {
@@ -52,6 +54,8 @@ const Innings = () => {
             }
             setCurrentBowler(currentGame.game.innings2CurrentBowler);
         }
+
+        setCurrentBowlerStats(calculateCurrentBowlerStats);
     };
     useEffect(() => {
         initialize();
@@ -129,6 +133,42 @@ const Innings = () => {
         return runs.join(" ");
     };
 
+    const calculateCurrentBowlerStats = () => {
+        var allBowling: {[key: string]: BowlingOver; } = {};
+        if(inningsId == "1") {
+            allBowling = currentGame.game.innings1Bowling??{};
+            
+        } else {
+            allBowling = currentGame.game.innings2Bowling??{};
+        }
+
+        var runs = 0;
+        var wickets = 0;
+        var balls = 0;
+        const over = currentOver();
+        for(let i=over; i>= 0; i--) {
+            if(`${allBowling[i]?.name??''}` === currentBowler?.name) {
+                for(var run of (allBowling[i]?.runs??[])) {
+                    balls++;
+                    if(run === "W"){
+                        wickets++;
+                    }
+                    if(!isNaN(Number(run))){
+                        runs += Number(run);
+                    }
+                }
+            }
+        }
+
+        const bowlerStats: BowlerStats =  {
+            overs: `${Math.floor(balls / 6)}.${balls % 6}`,
+            runs: runs,
+            wickets: wickets
+        };
+
+        return bowlerStats;
+    };
+
     return (
         <div className="Form">
             <div className="GameCard">
@@ -168,7 +208,10 @@ const Innings = () => {
                     <div>Bowler:</div>
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                            <div style={{minWidth: '40%'}}>{currentBowler?.name}</div>
+                            <div style={{minWidth: '30%'}}>{currentBowler?.name}</div>
+                            <div>Over: {currentBowlerStats?.overs}<span>|</span></div>
+                            <div>Runs: {currentBowlerStats?.runs}<span>|</span></div>
+                            <div>Wkts: {currentBowlerStats?.wickets} </div>
                             <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
                         </div>
                     </div>
@@ -177,9 +220,9 @@ const Innings = () => {
                     <div>Batsmen:</div>
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                            <div style={{minWidth: '40%'}}>
+                            <div style={{minWidth: '70%'}}  onClick={() => setCurrentBatsman(currentPlayer1)}>
                                 <span>
-                                    <input type="radio" checked={currentBatsman?.name === currentPlayer1?.name} onClick={() => setCurrentBatsman(currentPlayer1)}>
+                                    <input type="radio" checked={currentBatsman?.name === currentPlayer1?.name}>
                                     </input>
                                 </span>{currentPlayer1?.name} {currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0} ({currentPlayer1Scores?.length ?? 0})
                             </div>
@@ -188,9 +231,9 @@ const Innings = () => {
                     </div>
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                            <div style={{minWidth: '40%'}}>
+                            <div style={{minWidth: '70%'}}  onClick={() => setCurrentBatsman(currentPlayer2)}>
                                 <span>
-                                    <input type="radio" checked={currentBatsman?.name === currentPlayer2?.name} onClick={() => setCurrentBatsman(currentPlayer2)}>
+                                    <input type="radio" checked={currentBatsman?.name === currentPlayer2?.name}>
                                     </input>
                                 </span>{currentPlayer2?.name} {currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0} ({currentPlayer2Scores?.length ?? 0})
                             </div>
