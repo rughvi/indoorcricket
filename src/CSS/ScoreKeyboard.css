@@ -4,6 +4,10 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: thin;
+    padding: 10px;
 }
 
 .ScoreKeyboardRow {
@@ -18,9 +22,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border-radius: 25px; */
-    width: 45px;
-    height: 45px;
+    border-radius: 10px;
+    width: 55px;
+    height: 25px;
     border: 2px solid #219dad;
     font-size: calc(8px + 2vmin);
 }
