@@ -106,7 +106,8 @@ const Innings = () => {
         await dispatch(updateInningsBowling(input))
         await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
         if((inningsId == "1" && (currentGame.game.innings1TotalBalls! %6 == 5)) || (inningsId == "2" && (currentGame.game.innings2TotalBalls! %6 == 5))) {
-            setCurrentBowler(undefined);   
+            setCurrentBowler(undefined);
+            setCurrentBowlerStats(undefined);
         }
     };
 
