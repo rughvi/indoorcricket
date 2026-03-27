@@ -10,6 +10,32 @@
   width: 90%;
 }
 
+.BowlerCard {
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: thin;
+  margin: 10px;
+}
+
+.BatsmenCard {
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: thin;
+  margin: 10px;
+}
+
 .GameCard-header {
   display: flex;
   flex-direction: row;

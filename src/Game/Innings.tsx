@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as Edit } from '../edit.svg';
-import { ReactComponent as Next } from '../next.svg';
 import ScoreKeyboard from "./ScoreKeyboard";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootDispatch, IRootState } from "../store/store";
@@ -165,23 +164,39 @@ const Innings = () => {
                 
                 <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "100%",  whiteSpace: "nowrap"}}>{statsByBall()}</div>
                 <br/>
-                <div className="GameCard-header">
+                <div className="BowlerCard">
                     <div>Bowler:</div>
-                </div>
-                <div className="GameCard-header">
-                    <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                        <div style={{minWidth: '40%'}}>{currentBowler?.name}</div>
-                        <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                    <div className="GameCard-header">
+                        <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                            <div style={{minWidth: '40%'}}>{currentBowler?.name}</div>
+                            <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                        </div>
                     </div>
                 </div>
-                <div className="GameCard-header">
+                <div className="BatsmenCard">
                     <div>Batsmen:</div>
-                </div>
-                <div className="GameCard-header">
-                    <button className={`${(currentBatsman?.name === currentPlayer1?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer1)}>{currentPlayer1?.name}({currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0})</button>
-                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 1)}}/>
-                    <button className={`${(currentBatsman?.name === currentPlayer2?.name) ? 'CurrentPlayerButton ButtonSelected' : 'CurrentPlayerButton' }`} onClick={() => setCurrentBatsman(currentPlayer2)}>{currentPlayer2?.name}({currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0})</button>
-                    <Edit style={{height: "40px", width: "40px"}} onClick={() => {choosePlayer('player', 2)}}/>
+                    <div className="GameCard-header">
+                        <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                            <div style={{minWidth: '40%'}}>
+                                <span>
+                                    <input type="radio" checked={currentBatsman?.name === currentPlayer1?.name} onClick={() => setCurrentBatsman(currentPlayer1)}>
+                                    </input>
+                                </span>{currentPlayer1?.name} {currentPlayer1Scores?.reduce((a,c) => a+c) ?? 0} ({currentPlayer1Scores?.length ?? 0})
+                            </div>
+                            <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('player', 1)}}/>
+                        </div>
+                    </div>
+                    <div className="GameCard-header">
+                        <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                            <div style={{minWidth: '40%'}}>
+                                <span>
+                                    <input type="radio" checked={currentBatsman?.name === currentPlayer2?.name} onClick={() => setCurrentBatsman(currentPlayer2)}>
+                                    </input>
+                                </span>{currentPlayer2?.name} {currentPlayer2Scores?.reduce((a,c) => a+c) ?? 0} ({currentPlayer2Scores?.length ?? 0})
+                            </div>
+                            <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('player', 2)}}/>
+                        </div>
+                    </div>
                 </div>
                 <br />
                 <ScoreKeyboard onClick={onClickScoreKey} />
