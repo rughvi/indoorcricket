@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as Edit } from '../edit.svg';
+import { ReactComponent as Next } from '../next.svg';
+import { ReactComponent as Previous } from '../previous.svg'; 
 import ScoreKeyboard from "./ScoreKeyboard";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootDispatch, IRootState } from "../store/store";
@@ -202,8 +204,12 @@ const Innings = () => {
                         <br/>
                     </>
                 }
+                <div className="GameCard-header">
+                    <Previous style={{height: "25px", width: "25px"}} />
+                    <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "80%",  whiteSpace: "nowrap"}}>{statsByBall()}</div>
+                    <Next style={{height: "25px", width: "25px"}} />
+                </div>
                 
-                <div style={{display: "inline-block", overflowX: "auto", overflowY: "hidden", width: "100%",  whiteSpace: "nowrap"}}>{statsByBall()}</div>
                 <br/>
                 <div className="BowlerCard">
                     <div>Bowler:</div>
@@ -250,8 +256,8 @@ const Innings = () => {
                         <p> { error } </p>
                     </div>
                 }
+                <button className="Button" onClick={() => {navigate('/game')}}>Back</button>
             </div>
-            <button className="Button" onClick={() => {navigate('/game')}}>Back</button>
         </div>
     );
 };
