@@ -179,14 +179,14 @@ const Innings = () => {
                     <div>Innings: {inningsId}</div>
                 </div>
                 <br />
-                <div className="GameCard-header">
-                    <div>Batting: T{battingTeam}</div>
-                    <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings1TotalRuns`] ?? 0}/{currentGame.game.innings1Wickets ?? 0}</div>
-                    <div>Bowling: T{bowlingTeam}</div>
-                </div>
-                <br />
                 {(inningsId === "1") ? 
                     <>
+                        <div className="GameCard-header">
+                            <div>Batting: T{battingTeam}</div>
+                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings1TotalRuns`] ?? 0}/{currentGame.game.innings1Wickets ?? 0}</div>
+                            <div>Bowling: T{bowlingTeam}</div>
+                        </div>
+                        <br />
                         <div className="GameCard-header">
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}
                             </div>
@@ -196,6 +196,12 @@ const Innings = () => {
                     </>
                     : 
                     <>
+                        <div className="GameCard-header">
+                            <div>Batting: T{battingTeam}</div>
+                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings2TotalRuns`] ?? 0}/{currentGame.game.innings2Wickets ?? 0}</div>
+                            <div>Bowling: T{bowlingTeam}</div>
+                        </div>
+                        <br />
                         <div className="GameCard-header">
                             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}
                             </div>
