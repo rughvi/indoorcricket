@@ -8,6 +8,43 @@
     border-style: solid;
     border-width: thin;
     padding: 10px;
+    opacity: 1;
+}
+
+.ScoreKeyboardCardOverlay {
+    position: absolute;
+    z-index: 10;
+    font-weight: bold;
+    font-size: 20px;
+    opacity: 0;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+}
+
+.ScoreKeyboardCardOverlayShow {
+    position: absolute;
+    z-index: 10;
+    font-weight: bold;
+    font-size: 20px;
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 1s;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    backdrop-filter: blur(5px);
+    height: 100px;
+    border-radius: 20px;
 }
 
 .ScoreKeyboardRow {
