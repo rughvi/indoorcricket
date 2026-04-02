@@ -174,11 +174,8 @@ const Innings = () => {
 
     return (
         <div className="Form">
+            Innings: {inningsId}
             <div className="GameCard">
-                <div className="GameCard-header">
-                    <div>Innings: {inningsId}</div>
-                </div>
-                <br />
                 {(inningsId === "1") ? 
                     <>
                         <div className="GameCard-header">
