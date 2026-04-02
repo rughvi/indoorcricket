@@ -188,7 +188,7 @@ const Innings = () => {
                     <>
                         <div className="GameCard-header">
                             <div>Batting: T{battingTeam}</div>
-                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings1TotalRuns`] ?? 0}/{currentGame.game.innings1Wickets ?? 0}</div>
+                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)', color: "black"}}>{currentGame.game[`innings1TotalRuns`] ?? 0}/{currentGame.game.innings1Wickets ?? 0}</div>
                             <div>Bowling: T{bowlingTeam}</div>
                         </div>
                         <br />
@@ -203,7 +203,7 @@ const Innings = () => {
                     <>
                         <div className="GameCard-header">
                             <div>Batting: T{battingTeam}</div>
-                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game[`innings2TotalRuns`] ?? 0}/{currentGame.game.innings2Wickets ?? 0}</div>
+                            <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)', color: "black"}}>{currentGame.game[`innings2TotalRuns`] ?? 0}/{currentGame.game.innings2Wickets ?? 0}</div>
                             <div>Bowling: T{bowlingTeam}</div>
                         </div>
                         <br />
@@ -223,7 +223,10 @@ const Innings = () => {
                 
                 <br/>
                 <div className="BowlerCard">
-                    <div>Bowler:</div>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "10px"}}>
+                        <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Bowler:</div>
+                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
+                    </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
                             <div style={{minWidth: '30%'}}>{currentBowler?.name}</div>
@@ -235,7 +238,10 @@ const Innings = () => {
                     </div>
                 </div>
                 <div className="BatsmenCard">
-                    <div>Batsmen:</div>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "10px"}}>
+                        <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Batsmen:</div>
+                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
+                    </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
                             <div style={{minWidth: '70%'}}  onClick={() => setCurrentBatsman(currentPlayer1)}>
