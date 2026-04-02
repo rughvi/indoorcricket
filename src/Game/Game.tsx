@@ -80,14 +80,10 @@ const Game = () => {
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Runs: {currentGame.game.innings1TotalRuns ?? 0}</div>
-                   <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
+                    <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings1TotalRuns ?? 0} / {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
+                    <div>Wickets: {currentGame.game.innings1Wickets ?? 0}</div>
                 </div>
                 <br/>
-                <div className="GameCard-header">
-                   <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
-                </div>
-                <br />
                 <div className="GameCard-header">
                    <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</div>
                 </div>
@@ -105,14 +101,10 @@ const Game = () => {
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div>Runs: {currentGame.game.innings2TotalRuns ?? 0}</div>
+                   <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings2TotalRuns ?? 0} / {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
                    <div>Wickets: {currentGame.game.innings2Wickets ?? 0}</div>
                 </div>
                 <br/>
-                <div className="GameCard-header">
-                   <div>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
-                </div>
-                <br />
                 <div className="GameCard-header">
                    <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</div>
                 </div>
