@@ -62,6 +62,6 @@
     border-radius: 10px;
     width: 55px;
     height: 25px;
-    border: 2px solid #219dad;
+    border: 2px solid;
     font-size: calc(8px + 2vmin);
 }
