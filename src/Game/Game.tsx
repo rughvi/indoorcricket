@@ -5,7 +5,7 @@ import '../CSS/Button.css';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootDispatch, IRootState } from "../store/store";
-import { Player } from "../Models/Player";
+import { ReactComponent as Back } from '../back.svg';
 import { Teams } from "../Models/Teams";
 import { CurrentGame } from "../Models/CurrentGame";
 import { InningsStatus } from "../Models/InningsStatus";
@@ -66,7 +66,13 @@ const Game = () => {
 
     return (
         <div className="Form">
-            Game
+            <div className="GameCard">
+                <div className="GameCard-header">
+                    <Back style={{width: "30px", height:"30px"}} onClick={() => {navigate('/')}}></Back>
+                    Game
+                    <div style={{width: "30px"}}></div>
+                </div>
+            </div>
             <div className="GameCard">
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    

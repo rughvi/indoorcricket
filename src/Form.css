@@ -4,9 +4,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: stretch;
   font-size: calc(10px + 2vmin);
   color: #7e9ea6;
+  padding-top: 20px;
 }
 
 .line {

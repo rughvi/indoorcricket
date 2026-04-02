@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as Edit } from '../edit.svg';
 import { ReactComponent as Next } from '../next.svg';
 import { ReactComponent as Previous } from '../previous.svg'; 
+import { ReactComponent as Back } from '../back.svg';
 import ScoreKeyboard from "./ScoreKeyboard";
 import { useDispatch, useSelector } from "react-redux";
 import { IRootDispatch, IRootState } from "../store/store";
@@ -174,7 +175,14 @@ const Innings = () => {
 
     return (
         <div className="Form">
-            Innings: {inningsId}
+            <div className="GameCard">
+                <div className="GameCard-header">
+                    <Back style={{width: "30px", height:"30px"}} onClick={() => {navigate('/game')}}></Back>
+                    Innings: {inningsId}
+                    <div style={{width: "30px"}}></div>
+                </div>
+                <br/>
+            </div>
             <div className="GameCard">
                 {(inningsId === "1") ? 
                     <>
@@ -259,7 +267,6 @@ const Innings = () => {
                         <p> { error } </p>
                     </div>
                 }
-                <button className="Button" onClick={() => {navigate('/game')}}>Back</button>
             </div>
         </div>
     );
