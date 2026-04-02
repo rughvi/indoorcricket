@@ -6,6 +6,7 @@ import { Player } from "../Models/Player";
 import { CurrentGame } from "../Models/CurrentGame";
 import { updateInningsCurrentBowler, updateInningsCurrentPlayer } from "../Services/GameService";
 import { gameSlice } from "../store/slices/gameSlice";
+import { ReactComponent as Back } from '../back.svg';
 
 const CurrentPlayerSelection = () => {
     const { playerbowler, inningsId, currentPlayerId } = useParams();
@@ -31,9 +32,15 @@ const CurrentPlayerSelection = () => {
     };
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <p>Select {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</p>
+        <div className="Form">
+            <div className="GameCard">
+                <div className="GameCard-header">
+                    <Back style={{width: "30px", height:"30px"}} onClick={() => {navigate(`/innings/${inningsId}`)}}></Back>
+                    Select {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}
+                    <div style={{width: "30px"}}></div>
+                </div>
+            </div>
+            <div className="GameCard">
                 <ul className="TeamSelectionUL">
                     {teamPlayers.map((player, index) => (
                         <li key={index}>
@@ -45,7 +52,7 @@ const CurrentPlayerSelection = () => {
                 <br/>
                 <input style={{height: '30px', width: '50%',fontSize: '18px' }} value={playerBowler} onChange={(event) => {setPlayerBowler(event.target.value)}}/>
                 <button className="Button" onClick={() => { onPlayerSelectionDone({name: playerBowler}) }}>Add {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</button>
-            </header>
+            </div>
         </div>
     );
 };
