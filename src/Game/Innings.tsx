@@ -223,7 +223,7 @@ const Innings = () => {
                 
                 <br/>
                 <div className="BowlerCard">
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "10px"}}>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Bowler:</div>
                         <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
                     </div>                    
@@ -238,7 +238,7 @@ const Innings = () => {
                     </div>
                 </div>
                 <div className="BatsmenCard">
-                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "10px"}}>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Batsmen:</div>
                         <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
                     </div>                    
