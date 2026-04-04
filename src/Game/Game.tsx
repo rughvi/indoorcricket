@@ -76,7 +76,7 @@ const Game = () => {
             <div className="GameCard" style={{borderStyle: "solid", borderRadius: "10px", borderWidth: "thin", padding: 10, margin: 10}}>
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
-                    <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {startResumeInnings("1")}}>{innings1Action}</button>
+                    <button className={innings1Action !== 'Finished'? "ButtonSelected" : "Button"} disabled={innings1Action === 'Finished'} onClick={() => {startResumeInnings("1")}}>{innings1Action}</button>
                 </div>
                 <br/>
                 <div className="GameCard-header">
@@ -99,7 +99,7 @@ const Game = () => {
             <div className="GameCard"  style={{borderStyle: "solid", borderRadius: "10px", borderWidth: "thin", padding: 10}}>
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
-                    <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {startResumeInnings("2")}}>{innings2Action}</button>
+                    <button className={ innings1Action === 'Finished' && innings2Action !== 'Finished'? "ButtonSelected" : "Button"} disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {startResumeInnings("2")}}>{innings2Action}</button>
                 </div>
                 <br/>
                 <div className="GameCard-header">
