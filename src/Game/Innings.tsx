@@ -34,8 +34,6 @@ const Innings = () => {
     const [error, setError] = useState<string>('');
 
     const initialize = () => {
-        setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
-        setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
         if(inningsId == "1") {
             setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
             setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
@@ -225,7 +223,7 @@ const Innings = () => {
                 <div className="BowlerCard">
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Bowler:</div>
-                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
+                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}} href={`/inningsScore/${inningsId}`}>more</a>
                     </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
@@ -240,7 +238,7 @@ const Innings = () => {
                 <div className="BatsmenCard">
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Batsmen:</div>
-                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}}>more</a>
+                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}} href={`/inningsScore/${inningsId}`}>more</a>
                     </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
