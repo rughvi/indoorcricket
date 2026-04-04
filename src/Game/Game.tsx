@@ -73,46 +73,50 @@ const Game = () => {
                     <div style={{width: "30px"}}></div>
                 </div>
             </div>
-            <div className="GameCard">
+            <div className="GameCard" style={{borderStyle: "solid", borderRadius: "10px", borderWidth: "thin", padding: 10, margin: 10}}>
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}}>Innings 1</div>                    
                     <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {startResumeInnings("1")}}>{innings1Action}</button>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                    <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings1TotalRuns ?? 0} / {currentGame.game.innings1Wickets ?? 0}</div>
+                   <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</span> Batting</div>
+                </div>
+                <div className="GameCard-header">
+                    <div style={{color: "black", fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings1TotalRuns ?? 0} / {currentGame.game.innings1Wickets ?? 0}</div>
                     <div>Overs: {Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.{(currentGame.game.innings1TotalBalls ?? 0) % 6}</div>
                 </div>
                 <br/>
-                <div className="GameCard-header">
-                   <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</div>
+                <div style={{fontSize: 15, "width": "100%"}}>Players :</div>
+                <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap", justifyContent:"space-between", alignItems:"center", fontSize: 12, "width": "100%"}}>
+                    {currentGame.game.teamBattingFirst === Teams.One?
+                        currentGame.game.team1.map(p => (<div style={{padding: "5px 10px"}}>{p.name}</div>)):
+                        currentGame.game.team2.map(p => (<div style={{padding: "5px 5px", backgroundColor: "#efefef", color:"gray", borderRadius: "10px", marginRight: "2px"}}>{p.name}</div>))}
                 </div>
-                <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: { currentGame.game.teamBattingFirst === Teams.One?
-                                 currentGame.game.team1.map(p => p.name).join(", "):
-                                 currentGame.game.team2.map(p => p.name).join(", ") }
-                </p>
+                <br/>
                 <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {endInningsFn("1")}}>End innings</button>
             </div>
-            <div className="GameCard">
+            <div className="GameCard"  style={{borderStyle: "solid", borderRadius: "10px", borderWidth: "thin", padding: 10}}>
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: "bold"}} >Innings 2</div>                    
                     <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {startResumeInnings("2")}}>{innings2Action}</button>
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings2TotalRuns ?? 0} / {currentGame.game.innings2Wickets ?? 0}</div>
+                   <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</span> Batting</div>
+                </div>
+                <div className="GameCard-header">
+                   <div style={{color: "black", fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings2TotalRuns ?? 0} / {currentGame.game.innings2Wickets ?? 0}</div>
                    <div>Overs: {Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.{(currentGame.game.innings2TotalBalls ?? 0) % 6}</div>
                 </div>
                 <br/>
-                <div className="GameCard-header">
-                   <div>Batting: {currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</div>
+                <div style={{fontSize: 15, "width": "100%"}}>Players :</div>
+                <div style={{display:"flex", flexDirection:"row", flexWrap:"wrap", justifyContent:"space-between", alignItems:"center", fontSize: 12, "width": "100%"}}>
+                    {currentGame.game.teamBattingFirst === Teams.One?
+                        currentGame.game.team2.map(p => (<div style={{padding: "5px 10px"}}>{p.name}</div>)):
+                        currentGame.game.team1.map(p => (<div style={{padding: "5px 5px", backgroundColor: "#efefef", color:"gray", borderRadius: "10px", marginRight: "2px"}}>{p.name}</div>))}
                 </div>
-                <p style={{fontSize: 15, "width": "100%"}}>
-                    Players: {currentGame.game.teamBattingFirst === Teams.One?
-                                 currentGame.game.team2.map(p => p.name).join(", "):
-                                 currentGame.game.team1.map(p => p.name).join(", ")}
-                </p>
+                <br/>
                 <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {endInningsFn("2")}}>End innings</button>
             </div>
         </div>
