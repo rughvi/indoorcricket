@@ -91,10 +91,10 @@ const InningsScore = () => {
                 <div className="BatsmenCard">
                     {battingTeamPlayers.map((player:Player) => {
                         const playerScore: number[] = playersScore[(`${player.name}`)];
-                        return (<div style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                        return (<div key={player.name} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
                             <div style={{minWidth: '70%'}}>
                                 <span>
-                                    <input type="radio" checked={playerScore !== undefined}></input>
+                                    <input readOnly type="radio" checked={playerScore !== undefined}></input>
                                 </span>{player.name}
                             </div>
                             <div style={{minWidth: '30%'}}>
@@ -115,7 +115,7 @@ const InningsScore = () => {
                     </div>
                     {bowlingTeamPlayers.map((player: Player) => {
                         const bowlerStats = bowlersStats[(`${player.name}`)];
-                        return (<div style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                        return (<div key={player.name} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
                                 <div style={{minWidth: '40%'}}>{player?.name}</div>
                                 <div style={{minWidth: '20%', textAlign:"center"}}>{bowlerStats?.balls ?? 0}</div>
                                 <div style={{minWidth: '20%', textAlign:"center"}}>{bowlerStats?.runs ?? 0}</div>

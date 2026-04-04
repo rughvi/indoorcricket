@@ -223,7 +223,7 @@ const Innings = () => {
                 <div className="BowlerCard">
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Bowler:</div>
-                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}} href={`/inningsScore/${inningsId}`}>more</a>
+                        <div style={{fontSize: "12px", width:"100px", textAlign: "end", textDecoration:"underline"}} onClick={() => navigate(`/inningsScore/${inningsId}`)}>more</div>
                     </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
@@ -238,7 +238,7 @@ const Innings = () => {
                 <div className="BatsmenCard">
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: "20px"}}>
                         <div style={{color: "black", fontWeight: "bold", fontSize: "14px"}}>Batsmen:</div>
-                        <a style={{fontSize: "12px", width:"100px", textAlign: "end"}} href={`/inningsScore/${inningsId}`}>more</a>
+                        <div style={{fontSize: "12px", width:"100px", textAlign: "end", textDecoration:"underline"}} onClick={() => navigate(`/inningsScore/${inningsId}`)}>more</div>
                     </div>                    
                     <div className="GameCard-header">
                         <div style={{width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
