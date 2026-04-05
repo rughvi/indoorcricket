@@ -102,6 +102,22 @@ const InningsScore = () => {
                             </div>
                         </div>
                     )})}
+                    {
+                        Object.keys(playersScore).filter((playerName: string) => battingTeamPlayers.findIndex((player: Player) => player.name === playerName) === -1)
+                            .map((playerName: string) => {
+                                const playerScore: number[] = playersScore[(`${playerName}`)];
+                                return (<div key={playerName} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                                            <div style={{minWidth: '70%'}}>
+                                                <span>
+                                                    <input readOnly type="radio" checked={playerScore !== undefined}></input>
+                                                </span>{playerName}
+                                            </div>
+                                            <div style={{minWidth: '30%'}}>
+                                                {playerScore?.reduce((a,c) => a+c) ?? 0} ({playerScore?.length ?? 0})
+                                            </div>
+                                        </div>)
+                        })
+                    }
                 </div>
                 <div className="GameCard-header">
                     <div>Bowling: T{bowlingTeam}</div>
