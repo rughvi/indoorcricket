@@ -4,9 +4,10 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IRootDispatch, IRootState } from "../store/store";
 import { Player } from "../Models/Player";
 import { CurrentGame } from "../Models/CurrentGame";
-import { updateInningsCurrentBowler, updateInningsCurrentPlayer } from "../Services/GameService";
+import { addPlayerToTeam, updateInningsCurrentBowler, updateInningsCurrentPlayer } from "../Services/GameService";
 import { gameSlice } from "../store/slices/gameSlice";
 import { ReactComponent as Back } from '../back.svg';
+import { Teams } from "../Models/Teams";
 
 const CurrentPlayerSelection = () => {
     const { playerbowler, inningsId, currentPlayerId } = useParams();
@@ -24,6 +25,54 @@ const CurrentPlayerSelection = () => {
             await dispatch(updateInningsCurrentPlayer({gameId: currentGame.gameId, key: inningsCurrentPlayer, value: player })).unwrap();
             await dispatch(gameSlice.actions.updateInningsCurrentPlayer({key: inningsCurrentPlayer, value: player}));
         } else {
+            const inningsCurrentBowler: string = `innings${inningsId}CurrentBowler`;
+            await dispatch(updateInningsCurrentBowler({gameId: currentGame.gameId, key: inningsCurrentBowler, value: player })).unwrap();
+            await dispatch(gameSlice.actions.updateInningsCurrentBowler({key: inningsCurrentBowler, value: player}));
+        }
+        navigate(`/innings/${inningsId}`);
+    };
+
+    const onPlayerAdd = async (player: Player) => {
+        if(playerbowler === 'player') {
+            if(inningsId === "1") {
+                if(currentGame.game.teamBattingFirst === Teams.One) {
+                    // add batsmen to team 1
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team1", player})).unwrap();
+                } else {
+                    // add batsmen to team 2
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team2", player})).unwrap();
+                }
+            } else {
+                if(currentGame.game.teamBattingFirst === Teams.One) {
+                    // add batsmen to team 2
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team2", player})).unwrap();
+                } else {
+                    // add batsmen to team 1
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team1", player})).unwrap();
+                }
+            }
+            const inningsCurrentPlayer: string = `innings${inningsId}CurrentPlayer${currentPlayerId}`;
+            await dispatch(updateInningsCurrentPlayer({gameId: currentGame.gameId, key: inningsCurrentPlayer, value: player })).unwrap();
+            await dispatch(gameSlice.actions.updateInningsCurrentPlayer({key: inningsCurrentPlayer, value: player}));
+        } else {
+            if(inningsId === "1") {
+                if(currentGame.game.teamBattingFirst === Teams.One) {
+                    // add bowler to team 2
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team2", player})).unwrap();
+                } else {
+                    // add bowler to team 1
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team1", player})).unwrap();
+                }
+            } else {
+                if(currentGame.game.teamBattingFirst === Teams.One) {
+                    // add bowler to team 1
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team1", player})).unwrap();
+                } else {
+                    // add bowler to team 2
+                    await dispatch(addPlayerToTeam({gameId: currentGame.gameId, team: "team2", player})).unwrap();
+                }
+            }
+
             const inningsCurrentBowler: string = `innings${inningsId}CurrentBowler`;
             await dispatch(updateInningsCurrentBowler({gameId: currentGame.gameId, key: inningsCurrentBowler, value: player })).unwrap();
             await dispatch(gameSlice.actions.updateInningsCurrentBowler({key: inningsCurrentBowler, value: player}));
@@ -51,7 +100,7 @@ const CurrentPlayerSelection = () => {
                 <div className="line"></div>
                 <br/>
                 <input style={{height: '30px', width: '50%',fontSize: '18px' }} value={playerBowler} onChange={(event) => {setPlayerBowler(event.target.value)}}/>
-                <button className="Button" onClick={() => { onPlayerSelectionDone({name: playerBowler}) }}>Add {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</button>
+                <button className="Button" onClick={() => { onPlayerAdd({name: playerBowler}) }}>Add {playerbowler === 'player'? 'player ' + currentPlayerId : 'bowler'}</button>
             </div>
         </div>
     );
