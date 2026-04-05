@@ -16,7 +16,8 @@ const Game = () => {
     const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     const [innings1Action, setInnings1Action] = useState<string>('Start');
     const [innings2Action, setInnings2Action] = useState<string>('Start');
-
+    const [assertEndInnings, setAssertEndInnings] = useState<boolean>(false);
+    const [inningsToEnd, setInningsToEnd] = useState<string>("");
     const initialize = async () => {
             await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
             switch(currentGame.game.innings1Status) {
@@ -50,12 +51,13 @@ const Game = () => {
         fetch();
     }, [currentGame.game.innings1Status, currentGame.game.innings2Status]);
 
-    const endInningsFn = async (id: string) => {
+    const endInningsFn = async (id: string) => {        
         await dispatch(endInnings({gameId: currentGame.gameId, inningsId: id})).unwrap();
         if(id === "2") {
             await dispatch(endCurrentGame()).unwrap();
         }
         await initialize();
+        setAssertEndInnings(false);
     };
 
     const startResumeInnings = async (inningsId: string) => {
@@ -94,7 +96,7 @@ const Game = () => {
                         currentGame.game.team2.map(p => (<div style={{padding: "5px 5px", backgroundColor: "#efefef", color:"black", borderRadius: "10px", marginRight: "2px"}}>{p.name}</div>))}
                 </div>
                 <br/>
-                <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {endInningsFn("1")}}>End innings</button>
+                <button className="Button" disabled={innings1Action === 'Finished'} onClick={() => {setInningsToEnd("1"); setAssertEndInnings(true);}}>End innings</button>
             </div>
             <div className="GameCard"  style={{borderStyle: "solid", borderRadius: "10px", borderWidth: "thin", padding: 10, backgroundColor: "whitesmoke"}}>
                 <div className="GameCard-header">
@@ -117,8 +119,17 @@ const Game = () => {
                         currentGame.game.team1.map(p => (<div style={{padding: "5px 5px", backgroundColor: "#efefef", color:"black", borderRadius: "10px", marginRight: "2px"}}>{p.name}</div>))}
                 </div>
                 <br/>
-                <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {endInningsFn("2")}}>End innings</button>
+                <button className="Button" disabled={innings1Action !== 'Finished' || innings2Action === 'Finished'} onClick={() => {setInningsToEnd("2"); setAssertEndInnings(true)}}>End innings</button>
             </div>
+            { assertEndInnings && 
+                <div className="GameCard" style={{justifyContent: "center", position: "absolute", top:"0px", left:"0px", width:"100%", height:"100%", opacity:"0.9", color:"black"}}>
+                    <div style={{opacity:"1"}}>Are you sure you want to end innings?</div>
+                    <div>
+                        <button className="Button" onClick={() => setAssertEndInnings(false)}>No</button>
+                        <button className="Button" onClick={() => endInningsFn(inningsToEnd)}>Yes</button>
+                    </div>
+                </div>
+            }
         </div>
     );
 };
