@@ -17,15 +17,21 @@ const InningsScore = () => {
     const [bowlingTeam, setBowlingTeam] = useState<Teams>(Teams.One);
     const [playersScore, setPlayersScore] = useState<any>({});
     const [bowlersStats, setBowlersStats] = useState<any>({});
+    const [runsByWickets, setRunsByWickets] = useState<string>("");
+    const [overs, setOvers] = useState<string>("");
     const initialize = () => {
             if(inningsId == "1") {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
                 setPlayersScore(currentGame.game.innings1PlayersScore);
+                setRunsByWickets(`${currentGame.game.innings1TotalRuns} / ${currentGame.game.innings1Wickets ?? 0}`)
+                setOvers(`${Math.floor((currentGame.game.innings1TotalBalls ?? 0) / 6)}.${(currentGame.game.innings1TotalBalls ?? 0) % 6}`)
             } else {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
                 setPlayersScore(currentGame.game.innings2PlayersScore);
+                setRunsByWickets(`${currentGame.game.innings2TotalRuns} / ${currentGame.game.innings2Wickets ?? 0}`)
+                setOvers(`${Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.${(currentGame.game.innings2TotalBalls ?? 0) % 6}`)
             }
 
             var totalBalls = currentGame.game.innings2TotalBalls ?? 0;
@@ -81,7 +87,8 @@ const InningsScore = () => {
                 <br/>
                 <div className="GameCard-header">
                     <div>Batting: T{battingTeam}</div>
-                    <div>Extras: {inningsId === "1"? currentGame.game.innings1Extras??0 : currentGame.game.innings2Extras??0}</div>
+                    <div style={{fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)', color: "black"}}>{runsByWickets}</div>
+                    <div>Overs: {overs}</div>
                 </div>
                 <div className="BatsmenCard">
                     {
@@ -102,6 +109,7 @@ const InningsScore = () => {
                 </div>
                 <div className="GameCard-header">
                     <div>Bowling: T{bowlingTeam}</div>
+                    <div>Extras: {inningsId === "1"? currentGame.game.innings1Extras??0 : currentGame.game.innings2Extras??0}</div>
                 </div>
                 <div className="BowlerCard">
                     <div style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
