@@ -34,7 +34,7 @@ const InningsScore = () => {
                 setOvers(`${Math.floor((currentGame.game.innings2TotalBalls ?? 0) / 6)}.${(currentGame.game.innings2TotalBalls ?? 0) % 6}`)
             }
 
-            var totalBalls = currentGame.game.innings2TotalBalls ?? 0;
+            var totalBalls = inningsId === "1"?  currentGame.game.innings1TotalBalls ?? 0 : currentGame.game.innings2TotalBalls ?? 0;
             const bowlerStats: any = {};
             var over = 0;
             while(totalBalls > 0) {
