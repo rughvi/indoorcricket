@@ -15,19 +15,16 @@ const InningsScore = () => {
     const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
     const [bowlingTeam, setBowlingTeam] = useState<Teams>(Teams.One);
-    // const [bowlingTeamPlayers, setBowlingTeamPlayers] = useState<Player[]>([]);
     const [playersScore, setPlayersScore] = useState<any>({});
     const [bowlersStats, setBowlersStats] = useState<any>({});
     const initialize = () => {
             if(inningsId == "1") {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
-                // setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
                 setPlayersScore(currentGame.game.innings1PlayersScore);
             } else {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
-                // setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team1 : currentGame.game.team2);
                 setPlayersScore(currentGame.game.innings2PlayersScore);
             }
 
