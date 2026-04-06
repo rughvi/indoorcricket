@@ -87,4 +87,14 @@ export const ScoreKeyEvent = {
         value: 0,
         label: "W"
     },
+    Bowled: {
+        type: ScoreKey.Bowled,
+        value: 0,
+        label: "BWLD"
+    },
+    Catch: {
+        type: ScoreKey.Catch,
+        value: 0,
+        label: "CATCH"
+    }
 }

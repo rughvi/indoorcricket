@@ -37,6 +37,8 @@ const ScoreKeyboard = (props: {onClick: (keyPressed: ScoreKeyEventType) => void 
             <div className="ScoreKeyboardRow">
                 <div className="ScoreKeyboardElement" onClick={() => onClickScoreKey(ScoreKeyEvent.Wide)}>WD</div>
                 <div className="ScoreKeyboardElement" onClick={() => onClickScoreKey(ScoreKeyEvent.Dot)}>0</div>
+                <div className="ScoreKeyboardElement" style={{ backgroundColor: "#c31212" }} onClick={() => onClickScoreKey(ScoreKeyEvent.Bowled)}>Bowled</div>
+                <div className="ScoreKeyboardElement" style={{ backgroundColor: "#c31212" }} onClick={() => onClickScoreKey(ScoreKeyEvent.Catch)}>Catch</div>
                 <div className="ScoreKeyboardElement" style={{ backgroundColor: "#c31212" }} onClick={() => onClickScoreKey(ScoreKeyEvent.Wicket)}>WK</div>
             </div>
         </div>
