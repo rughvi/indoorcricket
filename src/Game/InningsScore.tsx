@@ -15,22 +15,19 @@ const InningsScore = () => {
     const currentGame: CurrentGame = useSelector<IRootState, CurrentGame>(state => state.game.currentGame);
     const [battingTeam, setBattingTeam] = useState<Teams>(Teams.One);
     const [bowlingTeam, setBowlingTeam] = useState<Teams>(Teams.One);
-    const [battingTeamPlayers, setBattingTeamPlayers] = useState<Player[]>([]);
-    const [bowlingTeamPlayers, setBowlingTeamPlayers] = useState<Player[]>([]);
+    // const [bowlingTeamPlayers, setBowlingTeamPlayers] = useState<Player[]>([]);
     const [playersScore, setPlayersScore] = useState<any>({});
     const [bowlersStats, setBowlersStats] = useState<any>({});
     const initialize = () => {
             if(inningsId == "1") {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
-                setBattingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team1 : currentGame.game.team2);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
-                setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
+                // setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
                 setPlayersScore(currentGame.game.innings1PlayersScore);
             } else {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
-                setBattingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
-                setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team1 : currentGame.game.team2);
+                // setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team1 : currentGame.game.team2);
                 setPlayersScore(currentGame.game.innings2PlayersScore);
             }
 
@@ -51,6 +48,9 @@ const InningsScore = () => {
                     balls++;
                     if(run === "W"){
                         wickets++;
+                    }
+                    if(run === "WD") {
+                        runs += 3;
                     }
                     if(!isNaN(Number(run))){
                         runs += Number(run);
@@ -84,24 +84,11 @@ const InningsScore = () => {
                 <br/>
                 <div className="GameCard-header">
                     <div>Batting: T{battingTeam}</div>
+                    <div>Extras: {inningsId === "1"? currentGame.game.innings1Extras??0 : currentGame.game.innings2Extras??0}</div>
                 </div>
                 <div className="BatsmenCard">
-                    {battingTeamPlayers.map((player:Player) => {
-                        const playerScore: number[] = playersScore[(`${player.name}`)];
-                        return (<div key={player.name} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                            <div style={{minWidth: '70%'}}>
-                                <span>
-                                    <input readOnly type="radio" checked={playerScore !== undefined}></input>
-                                </span>{player.name}
-                            </div>
-                            <div style={{minWidth: '30%'}}>
-                                {playerScore?.reduce((a,c) => a+c) ?? 0} ({playerScore?.length ?? 0})
-                            </div>
-                        </div>
-                    )})}
                     {
-                        Object.keys(playersScore).filter((playerName: string) => battingTeamPlayers.findIndex((player: Player) => player.name === playerName) === -1)
-                            .map((playerName: string) => {
+                        Object.keys(playersScore).map((playerName: string) => {
                                 const playerScore: number[] = playersScore[(`${playerName}`)];
                                 return (<div key={playerName} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
                                             <div style={{minWidth: '70%'}}>
@@ -126,10 +113,10 @@ const InningsScore = () => {
                         <div style={{minWidth: '20%', textAlign:"center"}}>Runs</div>
                         <div style={{minWidth: '20%', textAlign:"center"}}>Wickets</div>
                     </div>
-                    {bowlingTeamPlayers.map((player: Player) => {
-                        const bowlerStats = bowlersStats[(`${player.name}`)];
-                        return (<div key={player.name} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
-                                <div style={{minWidth: '40%'}}>{player?.name}</div>
+                    {Object.keys(bowlersStats).map((bowler: any) => {
+                        const bowlerStats = bowlersStats[(`${bowler}`)];
+                        return (<div key={bowler} style={{marginBottom:"5px", width: '100%', display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", fontSize: 'calc(6px + 2vmin)'}}>
+                                <div style={{minWidth: '40%'}}>{bowler}</div>
                                 <div style={{minWidth: '20%', textAlign:"center"}}>{bowlerStats?.balls ?? 0}</div>
                                 <div style={{minWidth: '20%', textAlign:"center"}}>{bowlerStats?.runs ?? 0}</div>
                                 <div style={{minWidth: '20%', textAlign:"center"}}>{bowlerStats?.wickets ?? 0}</div>
