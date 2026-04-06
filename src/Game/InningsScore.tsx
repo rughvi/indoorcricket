@@ -26,50 +26,47 @@ const InningsScore = () => {
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
                 setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
                 setPlayersScore(currentGame.game.innings1PlayersScore);
-                var totalBalls = currentGame.game.innings1TotalBalls ?? 0;
-                const bowlerStats: any = {};
-                var over = 0;
-                while(totalBalls > 0) {
-                    const inningsOverBowling: any = currentGame.game.innings1Bowling? (currentGame.game.innings1Bowling as any)[(`${over}`)] : {name: 'xxx', runs: []};
-                    var runs = 0;
-                    var balls = 0;
-                    var wickets = 0;
-                    for(var run of inningsOverBowling.runs){
-                        balls++;
-                        if(run === "W"){
-                            wickets++;
-                        }
-                        if(!isNaN(Number(run))){
-                            runs += Number(run);
-                        }
-                    }
-                    if(bowlerStats[(`${inningsOverBowling.name}`)]) {
-                        bowlerStats[(`${inningsOverBowling.name}`)].balls += balls;
-                        bowlerStats[(`${inningsOverBowling.name}`)].wickets += wickets;
-                        bowlerStats[(`${inningsOverBowling.name}`)].runs += runs;
-                    } else {
-                        bowlerStats[(`${inningsOverBowling.name}`)] = {balls, wickets, runs};
-                    }
-                    totalBalls -= 6;
-                    over++;
-                }
-                setBowlersStats(bowlerStats);
             } else {
                 setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.Two : Teams.One);
                 setBattingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team2 : currentGame.game.team1);
                 setBowlingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
                 setBowlingTeamPlayers(currentGame.game.teamBattingFirst === Teams.One? currentGame.game.team1 : currentGame.game.team2);
-                var totalBalls = currentGame.game.innings2TotalBalls ?? 0;
-                const bowlerStats: any = {};
-                var over = 0;
-                while(totalBalls > 0) {
-                    const inningsOverBowling: any = currentGame.game.innings2Bowling? (currentGame.game.innings2Bowling as any)[(`${over}`)] : {};
-                    bowlerStats[(`${inningsOverBowling.name}`)] = inningsOverBowling.runs;
-                    totalBalls -= 6;
-                    over++;
-                }
-                setBowlersStats(bowlerStats);
+                setPlayersScore(currentGame.game.innings2PlayersScore);
             }
+
+            var totalBalls = currentGame.game.innings2TotalBalls ?? 0;
+            const bowlerStats: any = {};
+            var over = 0;
+            while(totalBalls > 0) {
+                let inningsOverBowling: any = {};
+                if(inningsId === "1") {
+                    inningsOverBowling = currentGame.game.innings1Bowling? (currentGame.game.innings1Bowling as any)[(`${over}`)] : {name: 'xxx', runs: []};
+                } else {
+                    inningsOverBowling = currentGame.game.innings2Bowling? (currentGame.game.innings2Bowling as any)[(`${over}`)] : {name: 'xxx', runs: []};
+                }
+                var runs = 0;
+                var balls = 0;
+                var wickets = 0;
+                for(var run of inningsOverBowling.runs){
+                    balls++;
+                    if(run === "W"){
+                        wickets++;
+                    }
+                    if(!isNaN(Number(run))){
+                        runs += Number(run);
+                    }
+                }
+                if(bowlerStats[(`${inningsOverBowling.name}`)]) {
+                    bowlerStats[(`${inningsOverBowling.name}`)].balls += balls;
+                    bowlerStats[(`${inningsOverBowling.name}`)].wickets += wickets;
+                    bowlerStats[(`${inningsOverBowling.name}`)].runs += runs;
+                } else {
+                    bowlerStats[(`${inningsOverBowling.name}`)] = {balls, wickets, runs};
+                }
+                totalBalls -= 6;
+                over++;
+            }
+            setBowlersStats(bowlerStats);
         };
 
     useEffect(() => {

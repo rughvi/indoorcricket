@@ -82,7 +82,8 @@ const Game = () => {
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</span> Batting</div>
+                    <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 1' : 'Team 2'}</span> Batting</div>
+                    <div style={{fontSize: "12px", width:"100px", textAlign: "end", textDecoration:"underline"}} onClick={() => navigate(`/inningsScore/1`)}>more</div>
                 </div>
                 <div className="GameCard-header">
                     <div style={{color: "black", fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings1TotalRuns ?? 0} / {currentGame.game.innings1Wickets ?? 0}</div>
@@ -105,7 +106,8 @@ const Game = () => {
                 </div>
                 <br/>
                 <div className="GameCard-header">
-                   <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</span> Batting</div>
+                    <div style={{fontSize:"14px"}}><span style={{fontWeight: "bold", color:"black"}}>{currentGame.game.teamBattingFirst === Teams.One? 'Team 2' : 'Team 1'}</span> Batting</div>
+                    <div style={{fontSize: "12px", width:"100px", textAlign: "end", textDecoration:"underline"}} onClick={() => navigate(`/inningsScore/2`)}>more</div>
                 </div>
                 <div className="GameCard-header">
                    <div style={{color: "black", fontWeight: 'bold', fontSize: 'calc(16px + 2vmin)'}}>{currentGame.game.innings2TotalRuns ?? 0} / {currentGame.game.innings2Wickets ?? 0}</div>
