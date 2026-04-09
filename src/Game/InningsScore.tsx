@@ -55,6 +55,9 @@ const InningsScore = () => {
                     if(run === "WD") {
                         runs += 3;
                     }
+                    if(run.startsWith("RUNOUT")) {                        
+                        runs += Number(run.slice(run.indexOf("+")));
+                    }
                     if(!isNaN(Number(run))){
                         runs += Number(run);
                     }
