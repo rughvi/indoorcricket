@@ -16,5 +16,6 @@ export enum ScoreKey {
     Wide,
     Wicket,
     Bowled,
-    Catch
+    Catch,
+    Runout
 }

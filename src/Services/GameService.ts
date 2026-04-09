@@ -136,7 +136,7 @@ export const updateInningsCurrentPlayerScore = createAsyncThunk('game/updateInni
     });
 });
 
-export const updateInningsCurrentPlayerWicket = createAsyncThunk('game/updateInningsCurrentPlayerWicket', async (input: {gameId: string, inningsId: string, player: Player, currentPlayerKey: string}) => {
+export const updateInningsCurrentPlayerWicket = createAsyncThunk('game/updateInningsCurrentPlayerWicket', async (input: {gameId: string, inningsId: string, player: Player, currentPlayerKey: string, incrementBalls: boolean}) => {
     await runTransaction(db, async (transaction) => {
         const gameDocRef = doc(db, 'games', input.gameId);
         const gameDoc = await transaction.get(gameDocRef);
@@ -150,7 +150,9 @@ export const updateInningsCurrentPlayerWicket = createAsyncThunk('game/updateInn
         const gameData = gameDoc.data();
 
         await transaction.set(gameDocRef, {[inningsWicketsKey]: (gameData[inningsWicketsKey] + 1) }, {merge: true})
-        await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
+        if(input.incrementBalls){
+            await transaction.set(gameDocRef, {[inningsTotalBallsKey]: (gameData[inningsTotalBallsKey] + 1) }, {merge: true})
+        }
         await transaction.set(gameDocRef, {[input.currentPlayerKey] : null }, {merge: true});
     });
 });

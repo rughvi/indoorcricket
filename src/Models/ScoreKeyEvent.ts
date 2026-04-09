@@ -96,5 +96,10 @@ export const ScoreKeyEvent = {
         type: ScoreKey.Catch,
         value: 0,
         label: "CATCH"
+    },
+    Runout: {
+        type: ScoreKey.Runout,
+        value: 0,
+        label: "RUNOUT"
     }
 }

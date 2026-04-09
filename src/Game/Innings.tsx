@@ -13,7 +13,7 @@ import { Player } from "../Models/Player";
 import '../Form.css';
 import { fetchCurrentGame, updateInningsCurrentPlayerScore, updateInningsCurrentPlayerWicket, updateInningsExtras, updateInningsBowling } from "../Services/GameService";
 import { ScoreKey } from "../Models/ScoreKey";
-import { ScoreKeyEventType } from "../Models/ScoreKeyEvent";
+import { ScoreKeyEvent, ScoreKeyEventType } from "../Models/ScoreKeyEvent";
 import { BowlingOver } from "../Models/BowlingOver";
 import { BowlerStats } from "../Models/BowlerStats";
 
@@ -32,7 +32,10 @@ const Innings = () => {
     const [currentBowler, setCurrentBowler] = useState<Player>();
     const [currentBowlerStats, setCurrentBowlerStats] = useState<BowlerStats>();
     const [error, setError] = useState<string>('');
-
+    const [recordingRunout, setRecordingRunout] = useState<boolean>(false);
+    const [runoutRuns, setRunoutRuns] = useState<number>(0);
+    const [runoutBatsman, setRunoutBatsman] = useState<Player>();
+    const [runoutScoreBatsman, setRunoutScoreBatsman] = useState<Player>();
     const initialize = () => {
         if(inningsId == "1") {
             setBattingTeam(currentGame.game.teamBattingFirst === Teams.One ? Teams.One : Teams.Two);
@@ -83,16 +86,20 @@ const Innings = () => {
 
     const onClickScoreKey = async (scoreKeyEventType: ScoreKeyEventType) => {
         setError('');
+        if(scoreKeyEventType.type === ScoreKey.Runout) {
+            setRecordingRunout(true);
+            return;
+        };
         if((currentBowler?.name?.length ??0) === 0 || (currentBatsman?.name?.length ??0) === 0){
             setError('Select current players and bowlers');
             return;
-        }
+        }        
         if((scoreKeyEventType.type === ScoreKey.Wide) || (scoreKeyEventType.type === ScoreKey.NoBall) 
             || (scoreKeyEventType.type === ScoreKey.NoBallPlusOne) || (scoreKeyEventType.type === ScoreKey.NoBallPlusTwo) || (scoreKeyEventType.type === ScoreKey.NoBallPlusThree)
             || (scoreKeyEventType.type === ScoreKey.NoBallPlusFour) || (scoreKeyEventType.type === ScoreKey.NoBallPlusFive) || (scoreKeyEventType.type === ScoreKey.NoBallPlusSix)) {
             await dispatch(updateInningsExtras({gameId: currentGame.gameId, inningsId: inningsId!, score: scoreKeyEventType.value})).unwrap();
-        } else if((scoreKeyEventType.type == ScoreKey.Bowled) || (scoreKeyEventType.type == ScoreKey.Catch) || (scoreKeyEventType.type == ScoreKey.Wicket)) {
-            await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, currentPlayerKey: (currentBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` )})).unwrap();
+        } else if((scoreKeyEventType.type == ScoreKey.Bowled) || (scoreKeyEventType.type == ScoreKey.Catch)) {
+            await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, currentPlayerKey: (currentBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` ), incrementBalls: true})).unwrap();
             setCurrentBatsman(undefined);
         } else {
             await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: currentBatsman!, score: scoreKeyEventType.value})).unwrap();
@@ -112,9 +119,6 @@ const Innings = () => {
         }
     };
 
-    const nextOver = async () => {
-
-    };
     const currentOver = () => {
         return Math.floor((inningsId == "1"? (currentGame.game?.innings1TotalBalls??0) : (currentGame.game?.innings2TotalBalls??0)) / 6);
     };
@@ -169,6 +173,41 @@ const Innings = () => {
         };
 
         return bowlerStats;
+    };
+
+    const onRunout = async () => {
+        setError('');
+        if((runoutBatsman?.name?.length ??0) === 0 || (runoutScoreBatsman?.name?.length ??0) === 0){
+            setError('Select runout players');
+            return;
+        }
+        await dispatch(updateInningsCurrentPlayerScore({gameId: currentGame.gameId, inningsId: inningsId!, player: runoutScoreBatsman!, score: runoutRuns})).unwrap();
+        await dispatch(updateInningsCurrentPlayerWicket({gameId: currentGame.gameId, inningsId: inningsId!, player: runoutBatsman!, currentPlayerKey: (runoutBatsman?.name === currentPlayer1?.name ? `innings${inningsId}CurrentPlayer1` : `innings${inningsId}CurrentPlayer2` ), incrementBalls: false})).unwrap();
+        setCurrentBatsman(undefined);
+        if(currentPlayer1?.name === runoutBatsman?.name){
+            setCurrentPlayer1(undefined);
+            setCurrentPlayer1Scores(undefined);
+        } else {
+            setCurrentPlayer2(undefined);
+            setCurrentPlayer2Scores(undefined);
+        }
+        const input = {
+            gameId: currentGame.gameId, 
+            inningsId: inningsId!, 
+            over: currentOver(), 
+            bowler: currentBowler?.name!, 
+            scoreWicket: `${ScoreKeyEvent.Runout.label}+${runoutRuns}`
+        };
+        await dispatch(updateInningsBowling(input))
+        await dispatch(fetchCurrentGame(currentGame.gameId)).unwrap();
+        if((inningsId == "1" && (currentGame.game.innings1TotalBalls! %6 == 5)) || (inningsId == "2" && (currentGame.game.innings2TotalBalls! %6 == 5))) {
+            setCurrentBowler(undefined);
+            setCurrentBowlerStats(undefined);
+        }
+        setRunoutRuns(0);
+        setRunoutBatsman(undefined);
+        setRunoutScoreBatsman(undefined);
+        setRecordingRunout(false);
     };
 
     return (
@@ -272,6 +311,34 @@ const Innings = () => {
                     </div>
                 }
             </div>
+            {recordingRunout && 
+                <div className="GameCard" style={{justifyContent: "center", position: "absolute", top:"0px", left:"0px", width:"100%", height:"100%", opacity:"0.9", color:"black"}}>
+                    <span style={{fontWeight:"bold"}}>Runout</span>
+                    <br/>
+                    <div className="GameCard-header" style={{justifyContent: "space-evenly"}}>
+                        <div style={{width:"40%"}}>Runout:</div>
+                        <div style={{textAlign:"center"}} onClick={() => setRunoutBatsman(currentPlayer1)}><span><input type="radio" checked={runoutBatsman?.name === currentPlayer1?.name}></input></span>{currentPlayer1?.name}</div>
+                        <div style={{textAlign:"center"}} onClick={() => setRunoutBatsman(currentPlayer2)}><span><input type="radio" checked={runoutBatsman?.name === currentPlayer2?.name}></input></span>{currentPlayer2?.name}</div>
+                    </div>
+                    <br/>
+                    <div className="GameCard-header" style={{justifyContent: "space-evenly"}}>
+                        <div style={{width:"40%"}}>Add <span><input type="number" defaultValue={0} style={{width:"30px"}} value={runoutRuns} onChange={(event) => setRunoutRuns(Number(event.target.value))}></input></span> runs to:</div>
+                        <div style={{textAlign:"center"}} onClick={() => setRunoutScoreBatsman(currentPlayer1)}><span><input type="radio" checked={runoutScoreBatsman?.name === currentPlayer1?.name}></input></span>{currentPlayer1?.name}</div>
+                        <div style={{textAlign:"center"}} onClick={() => setRunoutScoreBatsman(currentPlayer2)}><span><input type="radio" checked={runoutScoreBatsman?.name === currentPlayer2?.name}></input></span>{currentPlayer2?.name}</div>
+                    </div>
+                    <br/>
+                    <div>
+                        <button className="Button" onClick={() => setRecordingRunout(false)}>Cancel</button>
+                        <button className="Button" onClick={() => onRunout()}>Continue</button>
+                    </div>
+                    {
+                        error.length > 0 &&
+                        <div className="error"> 
+                            <p> { error } </p>
+                        </div>
+                    }
+                </div>
+            }
         </div>
     );
 };
