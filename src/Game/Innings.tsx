@@ -116,6 +116,7 @@ const Innings = () => {
         if((inningsId == "1" && (currentGame.game.innings1TotalBalls! %6 == 5)) || (inningsId == "2" && (currentGame.game.innings2TotalBalls! %6 == 5))) {
             setCurrentBowler(undefined);
             setCurrentBowlerStats(undefined);
+            choosePlayer('bowler', -1);
         }
     };
 
@@ -270,7 +271,7 @@ const Innings = () => {
                             <div>Over: {currentBowlerStats?.overs}<span>|</span></div>
                             <div>Runs: {currentBowlerStats?.runs}<span>|</span></div>
                             <div>Wkts: {currentBowlerStats?.wickets} </div>
-                            <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('bowler', 1)}}/>
+                            <Edit style={{height: "25px", width: "25px"}} onClick={() => {choosePlayer('bowler', -1)}}/>
                         </div>
                     </div>
                 </div>
